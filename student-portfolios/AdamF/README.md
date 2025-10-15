@@ -2,7 +2,7 @@
 
 ---
 
-## 📋 Student Information For Reading
+## 📋 Student Information For Reading!
 
 | **Field** | **Details** |
 |-----------|-------------|
