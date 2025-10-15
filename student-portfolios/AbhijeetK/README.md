@@ -16,6 +16,6 @@
 
 
 ### Personal Photo
-![Abhijeet and family and Disney](Kasale.png)
+![Abhijeet and family at Disney](Kasale.png)
 
 
