@@ -8,7 +8,7 @@
 |-----------|-------------|
 | **Nickname/Pseudonym** | Abhi |
 | **Interesting Fact** | Completed Sun Java Certification to go on a date |
-| **Interesting Fact2** | I love travelling and reading |
+| **Interesting Fact2** | We are Potterheads and Lego enthusiasts |
 
 ---
 
@@ -16,6 +16,6 @@
 
 
 ### Personal Photo
-![Abhijeet and family at Disney](Kasale.png)
+![Lego HP](hp.png)
 
 
