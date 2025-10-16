@@ -19,6 +19,7 @@ This README is automatically generated and updated when changes are made to stud
 | LukeB | Luke | I have a 3yo Sheepadoodle named Benny.<br>I like playing badminton in my free time. | [View Portfolio](LukeB/README.md) | N/A | <img src="LukeB/PXL_20240522_154604796.PORTRAIT.ORIGINAL~3.jpg" alt="Benny in the flowers" title="Benny in the flowers" width="150"><img src="LukeB/IMG_0878.jpg" alt="Me playing badminton" title="Me playing badminton" width="150"> |
 | Mike.Abbo | Your Nickname | An interesting fact about you<br>Another interesting fact about you | [View Portfolio](Mike.Abbo/README.md) | N/A | <img src="Mike.Abbo/Contessa.jpg" alt="Description" title="Description" width="150"> |
 | MukeshM | Mukesh | Have 25 lb kettleballs thats been lifted number of...<br>probably the only person who Can discuss AI regres... | [View Portfolio](MukeshM/README.md) | N/A | <img src="MukeshM/IMG_8780.JPG" alt="Mukesh - Kettleball" title="Mukesh - Kettleball" width="150"> |
+| NikhilC | Nikhil | I am an avid hiker and have hiked some of the grea...<br>Some of the things that I do in my leisure time ar... | [View Portfolio](NikhilC/README.md) | N/A | <img src="NikhilC/./IMG_4487.png" alt="My hike at Angels Landing at Zion National Park" title="My hike at Angels Landing at Zion National Park" width="150"> |
 | RaheelU | Raheel | Enjoy traveling and hiking<br>Philadelphia sports fan - Go Birds!! | [View Portfolio](RaheelU/README.md) | N/A | <img src="RaheelU/Indonesia_waterfall.jpg" alt="Waterfall hike in Indonesia" title="Waterfall hike in Indonesia" width="150"> |
 | Raj | Raj | Born on the auspicious day of Diwali which happens...<br>loves to cook for my friends and family.🚴 | [View Portfolio](Raj/README.md) | N/A | <img src="Raj/IMG_3518.jpeg" alt="Hershey" title="Hershey" width="150"> |
 | RameshG | Ramesh | Love Gardening<br>Like to Travel and hike | [View Portfolio](RameshG/README.md) | N/A | <img src="RameshG/RameshG_Hershey.jpeg" alt="Hershey" title="Hershey" width="150"> |
@@ -69,4 +70,4 @@ This README is automatically generated and updated when changes are made to stud
 This README is automatically updated via GitHub Actions whenever any `README.md` file in the student-portfolios folder (or its subfolders) is modified.
 
 ---
-*Last updated: %Y->- (HEAD -> main, origin/main) 2a6bf75fbdf990f7bf9debd1e9af0be8c68efa67:%M:HEAD*
+*Last updated: %Y->- 78b896285b6d93bafb7fdb5ef905d23b58e59c53:%M:HEAD*
