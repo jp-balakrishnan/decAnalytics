@@ -14,5 +14,5 @@
 
 ## 🖼️ Portfolio Images
 
-### Image Title
+### Hoku
 ![Description](hoku.jpg)
