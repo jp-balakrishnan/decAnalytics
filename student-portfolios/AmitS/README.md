@@ -1,4 +1,4 @@
-# 👨‍🎓 Student Portfolio - Amit S. 🚴
+# 👨‍🎓 Student Portfolio - Amit S. 
 
 ---
 
