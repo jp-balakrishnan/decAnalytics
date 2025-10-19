@@ -15,6 +15,6 @@
 ## 🖼️ Portfolio Images
 
 ### Personal Photo
-![Amit - California Trip](IMG_1783.png)
+![Amit - California Trip](IMG_5084.jpeg)
 
 
