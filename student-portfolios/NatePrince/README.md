@@ -1,4 +1,4 @@
-# 👨‍🎓 Student Portfolio - Nathan Princilus . 🚴
+# 👨‍🎓 Student Portfolio - Nathan Princilus .
 
 ---
 
@@ -15,9 +15,9 @@
 ## 🖼️ Portfolio Images
 
 ### Things I have painted : 
-![Things I have painted]("C:\Users\natha\decAnalytics\student-portfolios\NatePrince\IMG_0598.jpg")
+![Things I have painted](./IMG_0598.jpg)
 
 ### Personal Photo
-![ Painting with my brother and mother]("C:\Users\natha\decAnalytics\student-portfolios\NatePrince\IMG_1701.jpg")
+![Painting with my brother and mother](./IMG_1701.jpg)
 
 
