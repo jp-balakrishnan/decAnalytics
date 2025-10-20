@@ -15,4 +15,4 @@
 ## 🖼️ Portfolio Images
 
 ### Whiteface Summit
-![White Face Mountain]((IMG_2756.JPG.jpg)
+![White Face Mountain](IMG_2756.jpeg)
