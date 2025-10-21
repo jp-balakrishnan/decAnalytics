@@ -1,6 +1,6 @@
 ---
-title: "Random Forest Challenge"
-subtitle: "The Power of Weak Learners"
+title: "Data Manipulation Challenge"
+subtitle: "A Mental Model for Method Chaining in Pandas"
 format:
   html: default
   pdf: default
@@ -9,21 +9,22 @@ execute:
   eval: true
 ---
 
-# 🌲 Random Forest Challenge - The Power of Weak Learners
+# 🔗 Data Manipulation Challenge - A Mental Model for Method Chaining in Pandas
 
 ::: {.callout-important}
 ## 📊 Challenge Requirements In Section [Student Analysis Section](#student-analysis-section)
-- Use the same y-axis limits for both side-by-side plots so it clearly shows whether random forests outperform decision trees.
-- Do not `echo` the code that creates the visualization
+- Complete all seven mental models of data manipulation using method chaining
+- Create visualizations that demonstrate your understanding of the data
+- Do not `echo` the code that creates the visualizations
 :::
 
-## The Problem: Can Many Weak Learners Beat One Strong Learner?
+## The Problem: Mastering Data Manipulation Through Method Chaining
 
-**Core Question:** How does the number of trees in a random forest affect predictive accuracy, and how do random forests compare to simpler approaches like linear regression?
+**Core Question:** How can we efficiently manipulate datasets using pandas method chaining to answer complex business questions?
 
-**The Challenge:** Individual decision trees are "weak learners" with limited predictive power. Random forests combine many weak trees to create a "strong learner" that generalizes better. But how many trees do we need? Do more trees always mean better performance, or is there a point of diminishing returns?
+**The Challenge:** Real-world data analysis requires combining multiple data manipulation techniques in sequence. Rather than creating intermediate variables at each step, method chaining allows us to write clean, readable code that flows logically from one operation to the next.
 
-**Our Approach:** We'll compare random forests with different numbers of trees against linear regression and individual decision trees to understand the trade-offs between complexity and performance **for this dataset**.
+**Our Approach:** We'll work with ZappTech's shipment data to answer critical business questions about service levels and cross-category orders, using the seven mental models of data manipulation through pandas method chaining.
 
 ::: {.callout-warning}
 ## ⚠️ AI Partnership Required
@@ -33,393 +34,432 @@ This challenge pushes boundaries intentionally. You'll tackle problems that norm
 **The new reality:** The four stages of competence are Ignorance → Awareness → Learning → Mastery. AI lets us produce Mastery-level work while operating primarily in the Awareness stage. I focus on awareness training, you leverage AI for execution, and together we create outputs that used to require years of dedicated study.
 :::
 
-## Data and Methodology
+## The Seven Mental Models of Data Manipulation
 
-We analyze the Ames Housing dataset, which contains detailed information about residential properties sold in Ames, Iowa from 2006 to 2010. This dataset is ideal for our analysis because:
+The seven most important ways we manipulate datasets are:
 
-- **Anticipated Non-linear Relationships:** Real estate prices have complex, non-linear relationships between features (e.g., square footage in wealthy vs. poor zip codes affects price differently)
-- **Mixed Data Types:** Contains both categorical (zipCode) and numerical variables
-- **Real-world Complexity:** Captures the kind of messy, real-world data where ensemble methods excel
+1. **Assign:** Add new variables with calculations and transformations
+2. **Subset:** Filter data based on conditions or select specific columns
+3. **Drop:** Remove unwanted variables or observations
+4. **Sort:** Arrange data by values or indices
+5. **Aggregate:** Summarize data using functions like mean, sum, count
+6. **Merge:** Combine information from multiple datasets
+7. **Split-Apply-Combine:** Group data and apply functions within groups
 
-Since we anticipate non-linear relationships, random forests are well-suited to model the relationship between features and sale price.
 
-::: {.panel-tabset}
+## Data and Business Context
 
-### R
+We analyze ZappTech's shipment data, which contains information about product deliveries across multiple categories. This dataset is ideal for our analysis because:
 
-```{r}
-#| label: load-and-model-r
+- **Real Business Questions:** CEO wants to understand service levels and cross-category shopping patterns
+- **Multiple Data Sources:** Requires merging shipment data with product category information
+- **Complex Relationships:** Service levels may vary by product category, and customers may order across categories
+- **Method Chaining Practice:** Perfect for demonstrating all seven mental models in sequence
+
+## Data Loading and Initial Exploration
+
+Let's start by loading the ZappTech shipment data and understanding what we're working with.
+
+```{python}
+#| label: load-data
 #| echo: true
 #| message: false
 #| warning: false
-
-# Load libraries
-suppressPackageStartupMessages(library(tidyverse))
-suppressPackageStartupMessages(library(randomForest))
-
-# Load data
-sales_data <- read.csv("https://raw.githubusercontent.com/flyaflya/buad442Fall2025/refs/heads/main/datasets/salesPriceData.csv")
-
-# Prepare model data
-model_data <- sales_data %>%
-  select(SalePrice, LotArea, YearBuilt, GrLivArea, FullBath, HalfBath, 
-         BedroomAbvGr, TotRmsAbvGrd, GarageCars, zipCode) %>%
-  # Convert zipCode to factor (categorical variable) - important for proper modeling
-  mutate(zipCode = as.factor(zipCode)) %>%
-  na.omit()
-
-cat("Data prepared with zipCode as categorical variable\n")
-cat("Number of unique zip codes:", length(unique(model_data$zipCode)), "\n")
-
-# Split data
-set.seed(123)
-train_indices <- sample(1:nrow(model_data), 0.8 * nrow(model_data))
-train_data <- model_data[train_indices, ]
-test_data <- model_data[-train_indices, ]
-
-# Build random forests with different numbers of trees (with corrected categorical zipCode)
-rf_1 <- randomForest(SalePrice ~ ., data = train_data, ntree = 1, mtry = 3, seed = 123)
-rf_5 <- randomForest(SalePrice ~ ., data = train_data, ntree = 5, mtry = 3, seed = 123)
-rf_25 <- randomForest(SalePrice ~ ., data = train_data, ntree = 25, mtry = 3, seed = 123)
-rf_100 <- randomForest(SalePrice ~ ., data = train_data, ntree = 100, mtry = 3, seed = 123)
-rf_500 <- randomForest(SalePrice ~ ., data = train_data, ntree = 500, mtry = 3, seed = 123)
-rf_1000 <- randomForest(SalePrice ~ ., data = train_data, ntree = 1000, mtry = 3, seed = 123)
-rf_2000 <- randomForest(SalePrice ~ ., data = train_data, ntree = 2000, mtry = 3, seed = 123)
-rf_5000 <- randomForest(SalePrice ~ ., data = train_data, ntree = 5000, mtry = 3, seed = 123)
-```
-
-### Python
-
-```{python}
-#| label: load-and-model-python
-#| echo: true
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
-import warnings
-warnings.filterwarnings('ignore')
+import seaborn as sns
+from datetime import datetime, timedelta
 
-# Load data
-sales_data = pd.read_csv("https://raw.githubusercontent.com/flyaflya/buad442Fall2025/refs/heads/main/datasets/salesPriceData.csv")
-
-# Prepare model data
-model_vars = ['SalePrice', 'LotArea', 'YearBuilt', 'GrLivArea', 'FullBath', 
-              'HalfBath', 'BedroomAbvGr', 'TotRmsAbvGrd', 'GarageCars', 'zipCode']
-model_data = sales_data[model_vars].dropna()
-
-# Convert zipCode to categorical variable - important for proper modeling
-model_data['zipCode'] = model_data['zipCode'].astype('category')
-
-# Split data
-X = model_data.drop('SalePrice', axis=1)
-y = model_data['SalePrice']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
-
-# Build random forests with different numbers of trees (with corrected categorical zipCode)
-rf_1 = RandomForestRegressor(n_estimators=1, max_features=3, random_state=123)
-rf_5 = RandomForestRegressor(n_estimators=5, max_features=3, random_state=123)
-rf_25 = RandomForestRegressor(n_estimators=25, max_features=3, random_state=123)
-rf_100 = RandomForestRegressor(n_estimators=100, max_features=3, random_state=123)
-rf_500 = RandomForestRegressor(n_estimators=500, max_features=3, random_state=123)
-rf_1000 = RandomForestRegressor(n_estimators=1000, max_features=3, random_state=123)
-rf_2000 = RandomForestRegressor(n_estimators=2000, max_features=3, random_state=123)
-rf_5000 = RandomForestRegressor(n_estimators=5000, max_features=3, random_state=123)
-
-# Fit all models
-rf_1.fit(X_train, y_train)
-rf_5.fit(X_train, y_train)
-rf_25.fit(X_train, y_train)
-rf_100.fit(X_train, y_train)
-rf_500.fit(X_train, y_train)
-rf_1000.fit(X_train, y_train)
-rf_2000.fit(X_train, y_train)
-rf_5000.fit(X_train, y_train)
-```
-
-:::
-
-## Results: The Power of Ensemble Learning
-
-Our analysis reveals a clear pattern: **more trees consistently improve performance**. Let's examine the results and understand why this happens.
-
-### Performance Trends
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: performance-comparison-r
-#| echo: true
-#| message: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 6
-
-# Calculate predictions and performance metrics for test data
-predictions_1_test <- predict(rf_1, test_data)
-predictions_5_test <- predict(rf_5, test_data)
-predictions_25_test <- predict(rf_25, test_data)
-predictions_100_test <- predict(rf_100, test_data)
-predictions_500_test <- predict(rf_500, test_data)
-predictions_1000_test <- predict(rf_1000, test_data)
-predictions_2000_test <- predict(rf_2000, test_data)
-predictions_5000_test <- predict(rf_5000, test_data)
-
-# Calculate predictions for training data
-predictions_1_train <- predict(rf_1, train_data)
-predictions_5_train <- predict(rf_5, train_data)
-predictions_25_train <- predict(rf_25, train_data)
-predictions_100_train <- predict(rf_100, train_data)
-predictions_500_train <- predict(rf_500, train_data)
-predictions_1000_train <- predict(rf_1000, train_data)
-predictions_2000_train <- predict(rf_2000, train_data)
-predictions_5000_train <- predict(rf_5000, train_data)
-
-# Calculate RMSE for test data
-rmse_1_test <- sqrt(mean((test_data$SalePrice - predictions_1_test)^2))
-rmse_5_test <- sqrt(mean((test_data$SalePrice - predictions_5_test)^2))
-rmse_25_test <- sqrt(mean((test_data$SalePrice - predictions_25_test)^2))
-rmse_100_test <- sqrt(mean((test_data$SalePrice - predictions_100_test)^2))
-rmse_500_test <- sqrt(mean((test_data$SalePrice - predictions_500_test)^2))
-rmse_1000_test <- sqrt(mean((test_data$SalePrice - predictions_1000_test)^2))
-rmse_2000_test <- sqrt(mean((test_data$SalePrice - predictions_2000_test)^2))
-rmse_5000_test <- sqrt(mean((test_data$SalePrice - predictions_5000_test)^2))
-
-# Calculate RMSE for training data
-rmse_1_train <- sqrt(mean((train_data$SalePrice - predictions_1_train)^2))
-rmse_5_train <- sqrt(mean((train_data$SalePrice - predictions_5_train)^2))
-rmse_25_train <- sqrt(mean((train_data$SalePrice - predictions_25_train)^2))
-rmse_100_train <- sqrt(mean((train_data$SalePrice - predictions_100_train)^2))
-rmse_500_train <- sqrt(mean((train_data$SalePrice - predictions_500_train)^2))
-rmse_1000_train <- sqrt(mean((train_data$SalePrice - predictions_1000_train)^2))
-rmse_2000_train <- sqrt(mean((train_data$SalePrice - predictions_2000_train)^2))
-rmse_5000_train <- sqrt(mean((train_data$SalePrice - predictions_5000_train)^2))
-
-# Calculate R-squared
-r2_1 <- 1 - sum((test_data$SalePrice - predictions_1_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_5 <- 1 - sum((test_data$SalePrice - predictions_5_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_25 <- 1 - sum((test_data$SalePrice - predictions_25_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_100 <- 1 - sum((test_data$SalePrice - predictions_100_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_500 <- 1 - sum((test_data$SalePrice - predictions_500_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_1000 <- 1 - sum((test_data$SalePrice - predictions_1000_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_2000 <- 1 - sum((test_data$SalePrice - predictions_2000_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_5000 <- 1 - sum((test_data$SalePrice - predictions_5000_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-
-# Create performance comparison
-performance_df <- data.frame(
-  Trees = c(1, 5, 25, 100, 500, 1000, 2000, 5000),
-  RMSE_Test = c(rmse_1_test, rmse_5_test, rmse_25_test, rmse_100_test, rmse_500_test, rmse_1000_test, rmse_2000_test, rmse_5000_test),
-  RMSE_Train = c(rmse_1_train, rmse_5_train, rmse_25_train, rmse_100_train, rmse_500_train, rmse_1000_train, rmse_2000_train, rmse_5000_train),
-  R_squared = c(r2_1, r2_5, r2_25, r2_100, r2_500, r2_1000, r2_2000, r2_5000)
+# Load the shipment data
+shipments_df = pd.read_csv(
+    "https://raw.githubusercontent.com/flyaflya/persuasive/main/shipments.csv", 
+    parse_dates=['plannedShipDate', 'actualShipDate']
 )
 
-print(performance_df)
+# Load product line data
+product_line_df = pd.read_csv(
+    "https://raw.githubusercontent.com/flyaflya/persuasive/main/productLine.csv"
+)
+
+# Reduce dataset size for faster processing (as in original notebook)
+shipments_df = shipments_df.head(4000)
+
+print("Shipments data shape:", shipments_df.shape)
+print("\nShipments data columns:", shipments_df.columns.tolist())
+print("\nFirst few rows of shipments data:")
+print(shipments_df.head())
+
+print("\n" + "="*50)
+print("Product line data shape:", product_line_df.shape)
+print("\nProduct line data columns:", product_line_df.columns.tolist())
+print("\nFirst few rows of product line data:")
+print(product_line_df.head())
 ```
 
-### Python
+::: {.callout-note}
+## 💡 Understanding the Data
 
-```{python}
-#| label: performance-comparison-python
-#| echo: true
-#| fig-width: 10
-#| fig-height: 6
+**Shipments Data:** Contains individual line items for each shipment, including:
+- `shipID`: Unique identifier for each shipment
+- `partID`: Product identifier
+- `plannedShipDate`: When the shipment was supposed to go out
+- `actualShipDate`: When it actually shipped
+- `quantity`: How many units were shipped
 
-# Calculate predictions for test data
-predictions_1_test = rf_1.predict(X_test)
-predictions_5_test = rf_5.predict(X_test)
-predictions_25_test = rf_25.predict(X_test)
-predictions_100_test = rf_100.predict(X_test)
-predictions_500_test = rf_500.predict(X_test)
-predictions_1000_test = rf_1000.predict(X_test)
-predictions_2000_test = rf_2000.predict(X_test)
-predictions_5000_test = rf_5000.predict(X_test)
+**Product Line Data:** Contains product category information:
+- `partID`: Links to shipments data
+- `productLine`: The category each product belongs to
 
-# Calculate predictions for training data
-predictions_1_train = rf_1.predict(X_train)
-predictions_5_train = rf_5.predict(X_train)
-predictions_25_train = rf_25.predict(X_train)
-predictions_100_train = rf_100.predict(X_train)
-predictions_500_train = rf_500.predict(X_train)
-predictions_1000_train = rf_1000.predict(X_train)
-predictions_2000_train = rf_2000.predict(X_train)
-predictions_5000_train = rf_5000.predict(X_train)
-
-# Calculate performance metrics for test data
-rmse_1_test = np.sqrt(mean_squared_error(y_test, predictions_1_test))
-rmse_5_test = np.sqrt(mean_squared_error(y_test, predictions_5_test))
-rmse_25_test = np.sqrt(mean_squared_error(y_test, predictions_25_test))
-rmse_100_test = np.sqrt(mean_squared_error(y_test, predictions_100_test))
-rmse_500_test = np.sqrt(mean_squared_error(y_test, predictions_500_test))
-rmse_1000_test = np.sqrt(mean_squared_error(y_test, predictions_1000_test))
-rmse_2000_test = np.sqrt(mean_squared_error(y_test, predictions_2000_test))
-rmse_5000_test = np.sqrt(mean_squared_error(y_test, predictions_5000_test))
-
-# Calculate performance metrics for training data
-rmse_1_train = np.sqrt(mean_squared_error(y_train, predictions_1_train))
-rmse_5_train = np.sqrt(mean_squared_error(y_train, predictions_5_train))
-rmse_25_train = np.sqrt(mean_squared_error(y_train, predictions_25_train))
-rmse_100_train = np.sqrt(mean_squared_error(y_train, predictions_100_train))
-rmse_500_train = np.sqrt(mean_squared_error(y_train, predictions_500_train))
-rmse_1000_train = np.sqrt(mean_squared_error(y_train, predictions_1000_train))
-rmse_2000_train = np.sqrt(mean_squared_error(y_train, predictions_2000_train))
-rmse_5000_train = np.sqrt(mean_squared_error(y_train, predictions_5000_train))
-
-r2_1 = r2_score(y_test, predictions_1_test)
-r2_5 = r2_score(y_test, predictions_5_test)
-r2_25 = r2_score(y_test, predictions_25_test)
-r2_100 = r2_score(y_test, predictions_100_test)
-r2_500 = r2_score(y_test, predictions_500_test)
-r2_1000 = r2_score(y_test, predictions_1000_test)
-r2_2000 = r2_score(y_test, predictions_2000_test)
-r2_5000 = r2_score(y_test, predictions_5000_test)
-
-# Create performance comparison
-performance_data = {
-    'Trees': [1, 5, 25, 100, 500, 1000, 2000, 5000],
-    'RMSE_Test': [rmse_1_test, rmse_5_test, rmse_25_test, rmse_100_test, rmse_500_test, rmse_1000_test, rmse_2000_test, rmse_5000_test],
-    'RMSE_Train': [rmse_1_train, rmse_5_train, rmse_25_train, rmse_100_train, rmse_500_train, rmse_1000_train, rmse_2000_train, rmse_5000_train],
-    'R_squared': [r2_1, r2_5, r2_25, r2_100, r2_500, r2_1000, r2_2000, r2_5000]
-}
-
-performance_df = pd.DataFrame(performance_data)
-print(performance_df)
-```
-
+**Business Questions We'll Answer:**
+1. Does service level (on-time shipments) vary across product categories?
+2. How often do orders include products from more than one category?
 :::
 
-## Student Analysis Section: The Power of More Trees {#student-analysis-section}
+## The Seven Mental Models: A Progressive Learning Journey
 
-**Your Task:** Create visualizations and analysis to demonstrate the power of ensemble learning. You'll need to create three key components:
+Now we'll work through each of the seven mental models using method chaining, starting simple and building complexity.
 
-### 1. The Power of More Trees Visualization
+### 1. Assign: Adding New Variables
+
+**Mental Model:** Create new columns with calculations and transformations.
+
+Let's start by calculating whether each shipment was late:
+
+```{python}
+#| label: mental-model-1-assign
+#| echo: true
+
+# Simple assignment - calculate if shipment was late
+shipments_with_lateness = (
+    shipments_df
+    .assign(
+        is_late=lambda df: df['actualShipDate'] > df['plannedShipDate'],
+        days_late=lambda df: (df['actualShipDate'] - df['plannedShipDate']).dt.days
+    )
+)
+
+print("Added lateness calculations:")
+print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'is_late', 'days_late']].head())
+```
+
+::: {.callout-tip}
+## 💡 Method Chaining Tip for New Python Users
+
+**Why use `lambda df:`?** When chaining methods, we need to reference the current state of the dataframe. The `lambda df:` tells pandas "use the current dataframe in this calculation." Without it, pandas would look for a variable called `df` that doesn't exist.
+
+**Alternative approach:** You could also write this as separate steps, but method chaining keeps related operations together and makes the code more readable.
+:::
+
+### 2. Subset: Filtering Data
+
+**Mental Model:** Select specific rows or columns based on conditions.
+
+Let's filter for only late shipments and see what we find:
+
+```{python}
+#| label: mental-model-2-subset
+#| echo: true
+
+# Filter for late shipments only
+late_shipments = (
+    shipments_with_lateness
+    .query('is_late == True')  # Filter rows where is_late is True
+    .filter(['shipID', 'partID', 'plannedShipDate', 'actualShipDate', 'days_late'])  # Select specific columns
+)
+
+print(f"Found {len(late_shipments)} late shipments out of {len(shipments_with_lateness)} total")
+print("\nLate shipments sample:")
+print(late_shipments.head())
+```
+
+::: {.callout-note}
+## 🔍 Understanding the Methods
+
+- **`.query()`**: Filter rows based on conditions (like SQL WHERE clause)
+- **`.filter()`**: Select specific columns by name
+- **Alternative**: You could use `.loc[]` for more complex filtering, but `.query()` is often more readable
+:::
+
+### 3. Drop: Removing Unwanted Data
+
+**Mental Model:** Remove columns or rows you don't need.
+
+Let's clean up our data by removing unnecessary columns:
+
+```{python}
+#| label: mental-model-3-drop
+#| echo: true
+
+# Create a cleaner dataset by dropping unnecessary columns
+clean_shipments = (
+    shipments_with_lateness
+    .drop(columns=['quantity'])  # Drop quantity column (not needed for our analysis)
+    .dropna(subset=['plannedShipDate', 'actualShipDate'])  # Remove rows with missing dates
+)
+
+print(f"Cleaned dataset: {len(clean_shipments)} rows, {len(clean_shipments.columns)} columns")
+print("Remaining columns:", clean_shipments.columns.tolist())
+```
+
+### 4. Sort: Arranging Data
+
+**Mental Model:** Order data by values or indices.
+
+Let's sort by lateness to see the worst offenders:
+
+```{python}
+#| label: mental-model-4-sort
+#| echo: true
+
+# Sort by days late (worst first)
+sorted_by_lateness = (
+    clean_shipments
+    .sort_values('days_late', ascending=False)  # Sort by days_late, highest first
+    .reset_index(drop=True)  # Reset index to be sequential
+)
+
+print("Shipments sorted by lateness (worst first):")
+print(sorted_by_lateness[['shipID', 'partID', 'days_late', 'is_late']].head(10))
+```
+
+### 5. Aggregate: Summarizing Data
+
+**Mental Model:** Calculate summary statistics across groups or the entire dataset.
+
+Let's calculate overall service level metrics:
+
+```{python}
+#| label: mental-model-5-aggregate
+#| echo: true
+
+# Calculate overall service level metrics
+service_metrics = (
+    clean_shipments
+    .agg({
+        'is_late': ['count', 'sum', 'mean'],  # Count total, count late, calculate percentage
+        'days_late': ['mean', 'max']  # Average and maximum days late
+    })
+    .round(3)
+)
+
+print("Overall Service Level Metrics:")
+print(service_metrics)
+
+# Calculate percentage on-time directly from the data
+on_time_rate = (1 - clean_shipments['is_late'].mean()) * 100
+print(f"\nOn-time delivery rate: {on_time_rate:.1f}%")
+```
+
+### 6. Merge: Combining Information
+
+**Mental Model:** Join data from multiple sources to create richer datasets.
+
+Now let's analyze service levels by product category. First, we need to merge our data:
+
+```{python}
+#| label: mental-model-6-merge-prep
+#| echo: true
+
+# Merge shipment data with product line data
+shipments_with_category = (
+    clean_shipments
+    .merge(product_line_df, on='partID', how='left')  # Left join to keep all shipments
+    .assign(
+        category_late=lambda df: df['is_late'] & df['productLine'].notna()  # Only count as late if we have category info
+    )
+)
+
+print(f"After merging: {len(shipments_with_category)} rows")
+print(f"Shipments with category info: {shipments_with_category['productLine'].notna().sum()}")
+print("\nProduct categories available:")
+print(shipments_with_category['productLine'].value_counts())
+```
+
+### 7. Split-Apply-Combine: Group Analysis
+
+**Mental Model:** Group data and apply functions within each group.
+
+Now let's analyze service levels by category:
+
+```{python}
+#| label: mental-model-7-groupby
+#| echo: true
+
+# Analyze service levels by product category
+service_by_category = (
+    shipments_with_category
+    .groupby('productLine')  # Split by product category
+    .agg({
+        'is_late': ['count', 'sum', 'mean'],  # Count, late count, percentage late
+        'days_late': ['mean', 'max']  # Average and max days late
+    })
+    .round(3)
+)
+
+print("Service Level by Product Category:")
+print(service_by_category)
+```
+
+Let's create a comprehensive analysis by combining shipment-level data with category information:
+
+```{python}
+#| label: mental-model-7-comprehensive
+#| echo: true
+
+# Create a comprehensive analysis dataset
+comprehensive_analysis = (
+    shipments_with_category
+    .groupby(['shipID', 'productLine'])  # Group by shipment and category
+    .agg({
+        'is_late': 'any',  # True if any item in this shipment/category is late
+        'days_late': 'max'  # Maximum days late for this shipment/category
+    })
+    .reset_index()
+    .assign(
+        has_multiple_categories=lambda df: df.groupby('shipID')['productLine'].transform('nunique') > 1
+    )
+)
+
+print("Comprehensive analysis - shipments with multiple categories:")
+multi_category_shipments = comprehensive_analysis[comprehensive_analysis['has_multiple_categories']]
+print(f"Shipments with multiple categories: {multi_category_shipments['shipID'].nunique()}")
+print(f"Total unique shipments: {comprehensive_analysis['shipID'].nunique()}")
+print(f"Percentage with multiple categories: {multi_category_shipments['shipID'].nunique() / comprehensive_analysis['shipID'].nunique() * 100:.1f}%")
+```
+
+## Student Analysis Section: Mastering Data Manipulation {#student-analysis-section}
+
+**Your Task:** Demonstrate your mastery of the seven mental models by creating comprehensive analysis and visualizations. You'll need to complete three key components:
+
+### 1. Service Level Analysis by Product Category
 
 **Create a visualization showing:**
-- RMSE vs Number of Trees (both training and test data)
-- R-squared vs Number of Trees
+- Service level (on-time percentage) by product category
+- Average days late by product category
 - Do not `echo` the code that creates the visualization
 
 **Add Brief Discussion of the Visualization**
-- Discuss where the most dramatic improvement in performance occurs as you add more trees, how dramatic is it?
-- Discuss diminishing returns as you add more trees
+- Which product categories have the best/worst service levels?
+- Are there significant differences between categories?
+- What business implications does this have for ZappTech?
 
 ::: {.callout-important}
 ## 📊 Visualization Requirements
 
 Create two plots:
-1. **RMSE Plot:** Show how RMSE decreases with more trees (both training and test)
-2. **R-squared Plot:** Show how R-squared increases with more trees
+1. **Service Level Bar Chart:** Show on-time percentage by product category
+2. **Days Late Box Plot:** Show distribution of days late by product category
 
-Use log scale on x-axis to better show the relationship across the range of tree counts.
+Use clear labels and consider using color coding to highlight differences.
 :::
 
-### 2. Overfitting Visualization and Analysis
+### 2. Cross-Category Order Analysis
 
-**Your Task:** Compare decision trees vs random forests in terms of overfitting.
+**Your Task:** Analyze how often customers order products from multiple categories.
 
 **Create one visualization with two side-by-side plots showing:**
-- Decision trees: How performance changes with tree complexity (max depth)
-- Random forests: How performance changes with number of trees
+- Distribution of categories per shipment
+- Percentage of shipments with multiple categories over time
 
 **Your analysis should explain:**
-- Why individual decision trees overfit as they become more complex
-- Why random forests don't suffer from the same overfitting problem
-- The mechanisms that prevent overfitting in random forests (bootstrap sampling, random feature selection, averaging)
+- What percentage of shipments include multiple product categories?
+- Are there trends over time in cross-category ordering?
+- What does this tell us about customer behavior?
 
 ::: {.callout-important}
-## 📊 Overfitting Analysis Requirements
+## 📊 Cross-Category Analysis Requirements
 
-Create a side-by-side comparison showing:
-1. **Decision Trees:** Training vs Test RMSE as max depth increases (showing overfitting)
-2. **Random Forests:** Training vs Test RMSE as number of trees increases (no overfitting)
+Create a comprehensive analysis showing:
+1. **Category Distribution:** Histogram of number of categories per shipment
+2. **Time Series:** Percentage of multi-category shipments over time
 
-- Use the same y-axis limits for both side-by-side plots so it clearly shows whether random forests outperform decision trees.
+- Use the same y-axis scale for comparison if creating side-by-side plots
 - Do not `echo` the code that creates the visualization
 :::
 
-### 3. Linear Regression vs Random Forest Comparison
+### 3. Advanced Method Chaining Challenge
 
-**Your Task:** Compare random forests to linear regression baseline.
+**Your Task:** Create a single, complex method chain that demonstrates all seven mental models.
 
-**Create a comparison table showing:**
-- Linear Regression RMSE
-- Random Forest (1 tree) RMSE  
-- Random Forest (100 trees) RMSE
-- Random Forest (1000 trees) RMSE
+**Create a comprehensive analysis that:**
+- Uses all seven mental models in one method chain
+- Answers a specific business question
+- Shows advanced pandas techniques
 
-**Your analysis should address:**
-- The improvement in RMSE when going from 1 tree to 100 trees
-- Whether switching from linear regression to 100-tree random forest shows similar improvement
-- When random forests are worth the added complexity vs linear regression
-- The trade-offs between interpretability and performance
+**Your analysis should demonstrate:**
+- **Assign:** Create new calculated fields
+- **Subset:** Filter data based on business logic
+- **Drop:** Remove unnecessary columns/rows
+- **Sort:** Order results meaningfully
+- **Aggregate:** Calculate summary statistics
+- **Split-Apply-Combine:** Group analysis
+- **Merge:** Combine multiple data sources
 
 ::: {.callout-important}
-## 📊 Comparison Requirements
+## 📊 Advanced Method Chaining Requirements
 
-Create a clear table comparing:
-- Linear Regression
-- Random Forest (1 tree)
-- Random Forest (100 trees) 
-- Random Forest (1000 trees)
+Create a single method chain that:
+- Uses all seven mental models
+- Answers: "What are the service level trends for each product category over time?"
+- Includes at least 8 method calls in the chain
+- Produces a meaningful business insight
 
-Include percentage improvements over linear regression for each random forest model.
+Show the complete method chain and explain each step.
 :::
 
 ## Challenge Requirements 📋
 
 ### Minimum Requirements for Any Points on Challenge
 
-1. **Create a GitHub Pages Site:** Use the starter repository (see Repository Setup section below) to begin with a working template. The repository includes all the analysis code and visualizations above.  Use just one language for the analysis and visualizations, delete the other language and omit the panel tabsets.
+1. **Complete All Seven Mental Models:** Demonstrate each of the seven mental models using method chaining in your analysis.
 
-2. **Add Analysis and Visualizations:** Complete the three analysis sections above with your own code and insights.
+2. **Create Visualizations:** Complete the three visualization requirements in the Student Analysis Section.
 
-3. **GitHub Repository:** Use your forked repository (from the starter repository) named "randomForestChallenge" in your GitHub account.
+3. **Advanced Method Chain:** Create a single, complex method chain that uses all seven mental models to answer a business question.
 
-4. **GitHub Pages Setup:** The repository should be made the source of your github pages:
-
-   - Go to your repository settings (click the "Settings" tab in your GitHub repository)
-   - Scroll down to the "Pages" section in the left sidebar
-   - Under "Source", select "Deploy from a branch"
-   - Choose "main" branch and "/ (root)" folder
-   - Click "Save"
-   - Your site will be available at: `https://[your-username].github.io/randomForestChallenge/`
-   - **Note:** It may take a few minutes for the site to become available after enabling Pages
+4. **Professional Analysis:** Write clear, business-focused analysis that explains your findings and their implications.
 
 ## Getting Started: Repository Setup 🚀
 
 ::: {.callout-important}
-## 📁 Quick Start with Starter Repository
+## 📁 Getting Started
 
-**Step 1:** Fork the starter repository to your github account at [https://github.com/flyaflya/randomForestChallenge.git](https://github.com/flyaflya/randomForestChallenge.git)
+**Step 1:** Create a new repository in your GitHub account named "dataManipulationChallenge"
 
-**Step 2:** Clone your fork locally using Cursor (or VS Code)
+**Step 2:** Clone your repository locally using Cursor (or VS Code)
 
-**Step 3:** You're ready to start! The repository includes pre-loaded data and a working template with all the analysis above.
+**Step 3:** Copy this `index.qmd` file to your repository
+
+**Step 4:** You're ready to start! The data loading code is already provided.
 :::
 
 ::: {.callout-tip}
-## 💡 Why Use the Starter Repository?
+## 💡 Why This Challenge Matters
 
-**Benefits:**
+**Real-world Skills:**
 
-- **Pre-loaded data:** All required data and analysis code is included
-- **Working template:** Basic Quarto structure (`index.qmd`) is ready
-- **No setup errors:** Avoid common data loading issues
-- **Focus on analysis:** Spend time on the visualizations and analysis, not data preparation
+- **Method chaining:** The foundation of modern data analysis
+- **Business analysis:** Answering real questions with data
+- **Code organization:** Writing clean, readable analysis code
+- **Problem solving:** Breaking complex questions into manageable steps
+
+**What you'll learn:**
+- How to think about data manipulation systematically
+- When to use each mental model
+- How to combine multiple operations efficiently
+- How to write professional data analysis reports
 :::
 
 ### Getting Started Tips
 
 ::: {.callout-note}
-## 🎯 Navy SEALs Motto
+## 🎯 Method Chaining Philosophy
 
-> "Slow is Smooth and Smooth is Fast"
+> "Each operation should build naturally on the previous one"
 
-*Take your time to understand the random forest mechanics, plan your approach carefully, and execute with precision. Rushing through this challenge will only lead to errors and confusion.*
+*Think of method chaining like building with LEGO blocks - each piece connects to the next, creating something more complex and useful than the individual pieces.*
 :::
 
 ::: {.callout-warning}
@@ -429,9 +469,9 @@ Include percentage improvements over linear regression for each random forest mo
 
 **Commit after each major step:**
 
+- After completing each mental model section
 - After adding your visualizations
-- After adding your analysis
-- After rendering to HTML
+- After completing your advanced method chain
 - Before asking the AI for help with new code
 
 **How to commit:**
@@ -449,31 +489,31 @@ Include percentage improvements over linear regression for each random forest mo
 ::: {.callout-important}
 ## 📊 What You're Really Being Graded On
 
-**This is an investigative report, not a coding exercise.** You're analyzing random forest models and reporting your findings like a professional analyst would. Think of this as a brief you'd write for a client or manager about the power of ensemble learning and when to use random forests vs simpler approaches.
+**This is a data analysis report, not just a coding exercise.** You're analyzing ZappTech's shipment data and reporting your findings like a professional analyst would. Think of this as a brief you'd write for the CEO about service levels and customer behavior patterns.
 
 **What makes a great report:**
 
-- **Clear narrative:** Tell the story of what you discovered about ensemble learning
-- **Insightful analysis:** Focus on the most interesting findings about random forest performance
+- **Clear narrative:** Tell the story of what you discovered about ZappTech's operations
+- **Insightful analysis:** Focus on the most interesting findings about service levels and customer behavior
 - **Professional presentation:** Clean, readable, and engaging
 - **Concise conclusions:** No AI babble or unnecessary technical jargon
-- **Human insights:** Your interpretation of what the performance improvements actually mean
-- **Practical implications:** When random forests are worth the added complexity
+- **Human insights:** Your interpretation of what the data actually means for the business
+- **Practical implications:** What ZappTech should do based on your findings
 
-**What we're looking for:** A compelling 2-3 minute read that demonstrates both the power of ensemble learning and the importance of choosing the right tool for the job.
+**What we're looking for:** A compelling 2-3 minute read that demonstrates both your data manipulation skills and your ability to extract business insights from data.
 :::
 
 ### Questions to Answer for 75% Grade on Challenge
 
-1. **Power of More Trees Analysis:** Provide a clear, well-reasoned analysis of how random forest performance improves with more trees. Your analysis should demonstrate understanding of ensemble learning principles and diminishing returns.
+1. **Service Level Analysis:** Provide a clear, well-reasoned analysis of service levels by product category. Your analysis should demonstrate understanding of the data and identify meaningful differences between categories.
 
 ### Questions to Answer for 85% Grade on Challenge
 
-2. **Overfitting Analysis:** Provide a thorough analysis comparing decision trees vs random forests in terms of overfitting. Your analysis should explain why individual trees overfit while random forests don't, and the mechanisms that prevent overfitting in ensemble methods.
+2. **Cross-Category Analysis:** Provide a thorough analysis of how often customers order from multiple categories. Your analysis should explain what this tells us about customer behavior and business opportunities.
 
 ### Questions to Answer for 95% Grade on Challenge
 
-3. **Linear Regression Comparison:** Your analysis should include a clear comparison table and discussion of when random forests are worth the added complexity vs linear regression. Focus on practical implications for real-world applications.
+3. **Advanced Method Chaining:** Your analysis should include a sophisticated method chain that demonstrates mastery of all seven mental models. Focus on the technical execution and business value of your analysis.
 
 ### Questions to Answer for 100% Grade on Challenge
 
@@ -483,41 +523,41 @@ Include percentage improvements over linear regression for each random forest mo
 
 **Minimum Requirements (Required for Any Points):**
 
-- [ ] Forked starter repository from [https://github.com/flyaflya/randomForestChallenge.git](https://github.com/flyaflya/randomForestChallenge.git)
+- [ ] Created repository named "dataManipulationChallenge" in your GitHub account
 - [ ] Cloned repository locally using Cursor (or VS Code)
 - [ ] Completed all three analysis sections with visualizations
 - [ ] Document rendered to HTML successfully
-- [ ] HTML files uploaded to your forked repository
+- [ ] HTML files uploaded to your repository
 - [ ] GitHub Pages enabled and working
-- [ ] Site accessible at `https://[your-username].github.io/randomForestChallenge/`
+- [ ] Site accessible at `https://[your-username].github.io/dataManipulationChallenge/`
 
 **75% Grade Requirements:**
 
-- [ ] Clear analysis of how random forest performance improves with more trees
-- [ ] Discussion of diminishing returns in ensemble learning
+- [ ] Clear analysis of service levels by product category
+- [ ] Discussion of business implications for ZappTech
 
 **85% Grade Requirements:**
 
-- [ ] Thorough overfitting analysis comparing decision trees vs random forests
-- [ ] Explanation of mechanisms that prevent overfitting in random forests
+- [ ] Thorough analysis of cross-category ordering patterns
+- [ ] Explanation of what this tells us about customer behavior
 
 **95% Grade Requirements:**
 
-- [ ] Complete linear regression comparison with clear table
-- [ ] Discussion of when random forests are worth the complexity
+- [ ] Complete advanced method chain using all seven mental models
+- [ ] Discussion of technical approach and business value
 
 **100% Grade Requirements:**
 
 - [ ] Professional presentation style appropriate for business audience
 - [ ] Clear, engaging narrative that tells a compelling story
-- [ ] Practical insights that would help a real data scientist
+- [ ] Practical insights that would help ZappTech's management
 
 **Report Quality (Critical for Higher Grades):**
 
 - [ ] Clear, engaging narrative that tells a story
-- [ ] Focus on the most interesting findings about ensemble learning
+- [ ] Focus on the most interesting findings about ZappTech's operations
 - [ ] Professional writing style (no AI-generated fluff)
 - [ ] Concise analysis that gets to the point
-- [ ] Practical insights that would help a real data scientist
+- [ ] Practical insights that would help a real business
 - [ ] Well-designed visualizations that support your analysis
 
