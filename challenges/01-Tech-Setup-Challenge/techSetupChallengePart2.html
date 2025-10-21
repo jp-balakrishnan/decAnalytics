@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>My Data Visualization Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="techSetupChallengePart2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="techSetupChallengePart2_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="techSetupChallengePart2_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="techSetupChallengePart2_files/libs/quarto-html/popper.min.js"></script>
+<script src="techSetupChallengePart2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="techSetupChallengePart2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="techSetupChallengePart2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="techSetupChallengePart2_files/libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="techSetupChallengePart2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="techSetupChallengePart2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="techSetupChallengePart2_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">My Data Visualization Portfolio</h1>
+<p class="subtitle lead">Quarto, Virtual Environments &amp; Data Visualization</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="tech-setup-challenge---part-2-quarto-python-environment" class="level1">
+<h1>📊 Tech Setup Challenge - Part 2: Quarto &amp; Python Environment</h1>
+<section id="prerequisites" class="level2">
+<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites ✅</h2>
+<p><strong>Before starting Part 2, make sure you’ve completed Part 1:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox">Cursor AI installed and configured</label></li>
+<li><label><input type="checkbox">Git set up in Cursor AI (Source Control)</label></li>
+<li><label><input type="checkbox">GitHub account created</label></li>
+<li><label><input type="checkbox">Course materials forked and cloned</label></li>
+<li><label><input type="checkbox">Student folder created with README.md</label></li>
+<li><label><input type="checkbox">Initial pull request submitted</label></li>
+</ul>
+</section>
+<section id="part-2-quarto-python-environment-setup" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-quarto-python-environment-setup">Part 2: Quarto &amp; Python Environment Setup 🐍</h2>
+<section id="why-quarto" class="level3">
+<h3 class="anchored" data-anchor-id="why-quarto">Why Quarto?</h3>
+<p>Quarto is essential for creating <strong>professional reports</strong> that combine:</p>
+<ul>
+<li><strong>Text</strong> (like this document)</li>
+<li><strong>Code</strong> (Python/R analysis)</li>
+<li><strong>Visualizations</strong> (charts, graphs)</li>
+<li><strong>Interactive elements</strong> (dashboards)</li>
+</ul>
+<p>It’s not just for code - it’s for creating beautiful, reproducible documents that are perfect for business presentations and reports.</p>
+</section>
+<section id="install-quarto" class="level3">
+<h3 class="anchored" data-anchor-id="install-quarto">1. 📚 Install Quarto</h3>
+<ul>
+<li><p>Go to <a href="https://quarto.org/docs/get-started/">quarto.org/docs/get-started/</a></p></li>
+<li><p>Download and install Quarto for your operating system</p></li>
+<li><p>Verify installation: Open terminal/command prompt and type <code>quarto --version</code></p></li>
+<li><p><strong>💡 Recommended:</strong> Install the Quarto extension in Cursor AI for better editing experience:</p>
+<ul>
+<li>Press <code>Ctrl+Shift+X</code> to open Extensions (from within Cursor AI)</li>
+<li>Search for “Quarto”</li>
+<li>Install the “Quarto” extension by Quarto</li>
+<li><strong>Why?</strong> This gives you syntax highlighting, live preview, and better editing support for <code>.qmd</code> files</li>
+</ul></li>
+</ul>
+</section>
+<section id="create-your-own-github-repository" class="level3">
+<h3 class="anchored" data-anchor-id="create-your-own-github-repository">2. 🆕 Create Your Own GitHub Repository</h3>
+<p><strong>Why Create a Separate Repository?</strong></p>
+<p>Creating your own repository for Quarto projects is a best practice that: - Keeps your work organized and separate from course materials - Allows you to showcase your portfolio publicly - Teaches you proper project management - Enables GitHub Pages for hosting your documents</p>
+<p><strong>Create a New Repository on GitHub:</strong></p>
+<ol type="1">
+<li><strong>Go to GitHub.com</strong> and make sure you’re logged in</li>
+<li><strong>Click the “+” icon</strong> in the top right corner → “New repository”</li>
+<li><strong>Repository settings:</strong>
+<ul>
+<li><strong>Repository name:</strong> <code>your-nickname-quarto-portfolio</code> (e.g., <code>johnD-quarto-portfolio</code>)</li>
+<li><strong>Description:</strong> “My Quarto data visualization portfolio”</li>
+<li><strong>Visibility:</strong> Public (so you can use GitHub Pages)</li>
+<li><strong>Initialize with:</strong> Check “Add a README file”</li>
+</ul></li>
+<li><strong>Click “Create repository”</strong></li>
+</ol>
+</section>
+<section id="clone-your-new-repository" class="level3">
+<h3 class="anchored" data-anchor-id="clone-your-new-repository">3. 📥 Clone Your New Repository</h3>
+<p><strong>Clone to Your Computer:</strong></p>
+<ol type="1">
+<li><strong>In Cursor AI:</strong> Press <code>Ctrl+Shift+P</code> → “Git: Clone”</li>
+<li><strong>Paste your repository URL:</strong> <code>https://github.com/YOUR_USERNAME/your-nickname-quarto-portfolio</code></li>
+<li><strong>Choose location:</strong> Save it somewhere easy to find (like <code>C:\</code> or your Documents folder)</li>
+<li><strong>Open the cloned repository</strong> in Cursor AI</li>
+</ol>
+</section>
+<section id="set-up-python-virtual-environment" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-python-virtual-environment">4. 🐍 Set Up Python Virtual Environment</h3>
+<p><strong>Why Virtual Environments?</strong> Virtual environments keep your Python packages organized and prevent conflicts between different projects. Each project can have its own set of packages without interfering with others.</p>
+<p><strong>Create a Virtual Environment:</strong></p>
+<ol type="1">
+<li><p><strong>Open Terminal in Cursor AI:</strong></p>
+<ul>
+<li>Press `Ctrl + `` (backtick key, usually under the Esc key) to open the integrated terminal</li>
+<li>OR go to the top menu: <strong>Terminal</strong> → <strong>New Terminal</strong></li>
+</ul></li>
+<li><p><strong>You should already be in your repository folder</strong> (if not, navigate to it)</p></li>
+<li><p><strong>Create Virtual Environment:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv venv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This creates a folder called <code>venv</code> with a clean Python environment</li>
+</ul></li>
+<li><p><strong>Activate Virtual Environment:</strong></p>
+<p><strong>First, identify your terminal type:</strong></p>
+<ul>
+<li><strong>Command Prompt (cmd):</strong> Prompt shows <code>C:\&gt;</code> or similar with backslash paths</li>
+<li><strong>PowerShell:</strong> Prompt shows <code>PS C:\&gt;</code> with “PS” at the beginning</li>
+<li><strong>Git Bash:</strong> Prompt shows <code>user@computer MINGW64</code> or similar</li>
+<li><strong>Mac/Linux Terminal:</strong> Prompt shows <code>user@computer:~$</code> or similar</li>
+</ul>
+<p><strong>Then use the appropriate command:</strong></p>
+<ul>
+<li><p><strong>Windows Command Prompt (cmd):</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cmd code-with-copy"><code class="sourceCode dosbat"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>venv\Scripts\activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Windows PowerShell:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\venv\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Note:</strong> If you get an execution policy error, run: <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code></li>
+</ul></li>
+<li><p><strong>Windows Git Bash:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/Scripts/activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Mac/Linux Terminal:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>Success indicator:</strong> You should see <code>(venv)</code> at the beginning of your terminal prompt</p></li>
+<li><p><strong>Install Required Packages:</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install matplotlib pandas jupyter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Verify Installation:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import matplotlib, pandas, jupyter; print('All packages installed successfully!')"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>You should see: “All packages installed successfully!”</li>
+<li>If you get an error, try: <code>pip install --upgrade pip</code> then reinstall the packages</li>
+</ul></li>
+</ol>
+</section>
+<section id="configure-cursor-to-auto-activate-environment" class="level3">
+<h3 class="anchored" data-anchor-id="configure-cursor-to-auto-activate-environment">5. 🎯 Configure Cursor to Auto-Activate Environment</h3>
+<p><strong>Important:</strong> Keep your terminal open with the virtual environment activated while you complete the next steps.</p>
+<p><strong>Set Python Interpreter (Project-Specific):</strong></p>
+<ol type="1">
+<li><strong>Make sure you have your repository folder open</strong> in Cursor (not just a single file)</li>
+<li>Press <code>Ctrl+Shift+P</code> to open the command palette</li>
+<li>Type “Python: Select Interpreter”</li>
+<li>Choose the interpreter from your virtual environment:
+<ul>
+<li><strong>Windows:</strong> Look for <code>.\venv\Scripts\python.exe</code></li>
+<li><strong>Mac/Linux:</strong> Look for <code>./venv/bin/python</code></li>
+<li><strong>Important:</strong> Make sure it shows the path to YOUR project’s <code>venv</code> folder</li>
+</ul></li>
+<li><strong>Why?</strong> This tells Cursor to use your virtual environment’s Python and packages for THIS project only</li>
+</ol>
+<p><strong>💡 Pro Tip:</strong> Cursor will remember this setting for this specific project folder. When you open this repository in the future, it will automatically use the correct virtual environment!</p>
+<p><strong>Verify Setup:</strong></p>
+<ul>
+<li>Open a new terminal in Cursor</li>
+<li>You should see <code>(venv)</code> in the prompt automatically</li>
+<li>Type <code>python -c "import matplotlib; print('Matplotlib installed successfully!')"</code></li>
+</ul>
+</section>
+<section id="install-live-preview-extension" class="level3">
+<h3 class="anchored" data-anchor-id="install-live-preview-extension">6. 📱 Install Live Preview Extension</h3>
+<p><strong>Why Live Preview?</strong></p>
+<p>Live Preview allows you to see your HTML documents update in real-time as you make changes, making development much faster and more interactive.</p>
+<p><strong>Install the Extension:</strong></p>
+<ol type="1">
+<li><strong>Open Extensions:</strong> Press <code>Ctrl+Shift+X</code> in Cursor</li>
+<li><strong>Search for:</strong> “Live Preview”</li>
+<li><strong>Install:</strong> “Live Preview” by Microsoft</li>
+<li><strong>Why?</strong> This extension lets you preview HTML files directly in Cursor with live updates</li>
+</ol>
+</section>
+<section id="create-your-first-data-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="create-your-first-data-visualization">7. 📊 Create Your First Data Visualization</h3>
+<p><strong>Create a Quarto Document with Matplotlib:</strong></p>
+<ol type="1">
+<li><p><strong>Create a new file</strong> in your repository called <code>index.qmd</code> (this will be your main portfolio page)</p></li>
+<li><p><strong>Add this content</strong> (replace bracketed text with your nickname):</p></li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🎭 YAML Front-Matter: The Secret Sauce
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>What you’re about to see</strong> (between the <code>---</code> lines) is called <strong>YAML front-matter</strong> - and yes, YAML stands for “YAML Ain’t Markup Language” (because the original acronym was “Yet Another Markup Language” and they got meta with it! 🤯).</p>
+<p>Think of it as the <strong>control panel</strong> for your Quarto document - it’s where you tell Quarto how to dress up your content. Want HTML? PDF? Should code run or just show? It’s all configured here in this little language-within-a-language that makes your markdown document go from “meh” to “WOW!” ✨</p>
+</div>
+</div>
+<p>Copy and paste this content into your <code>index.qmd</code> file:</p>
+</section>
+</section>
+</section>
+<section id="welcome-to-my-portfolio" class="level1">
+<h1>Welcome to My Portfolio! 📊</h1>
+<p>Hello! My nickname is [YourNickNameLastInitial]. This is my Quarto data visualization portfolio showcasing my Python and matplotlib skills.</p>
+<section id="about-this-portfolio" class="level2">
+<h2 class="anchored" data-anchor-id="about-this-portfolio">About This Portfolio</h2>
+<p>This portfolio demonstrates how Quarto can seamlessly integrate Python code and visualizations into professional documents. Each chart below is created using matplotlib and embedded directly into this document.</p>
+</section>
+<section id="simple-line-chart" class="level2">
+<h2 class="anchored" data-anchor-id="simple-line-chart">Simple Line Chart</h2>
+<p>Let’s create a simple line chart showing some sample data:</p>
+<div id="1d022806" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create sample data</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.sin(x)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">4.75</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.plot(x, y, <span class="st">'b-'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'sin(x)'</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'X values'</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Y values'</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'My First Matplotlib Chart'</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="techSetupChallengePart2_files/figure-html/cell-2-output-1.png" width="608" height="431" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bar-chart-example" class="level2">
+<h2 class="anchored" data-anchor-id="bar-chart-example">Bar Chart Example</h2>
+<p>Here’s a bar chart showing some sample data:</p>
+<div id="d07797ee" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample data for bar chart</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> [<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="st">'C'</span>, <span class="st">'D'</span>, <span class="st">'E'</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> [<span class="dv">23</span>, <span class="dv">45</span>, <span class="dv">56</span>, <span class="dv">78</span>, <span class="dv">32</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">4.75</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> plt.bar(categories, values, color<span class="op">=</span>[<span class="st">'red'</span>, <span class="st">'green'</span>, <span class="st">'blue'</span>, <span class="st">'orange'</span>, <span class="st">'purple'</span>])</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Categories'</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Values'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sample Bar Chart'</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Add value labels on bars</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar, value <span class="kw">in</span> <span class="bu">zip</span>(bars, values):</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    plt.text(bar.get_x() <span class="op">+</span> bar.get_width()<span class="op">/</span><span class="dv">2</span>, bar.get_height() <span class="op">+</span> <span class="dv">1</span>, </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>             <span class="bu">str</span>(value), ha<span class="op">=</span><span class="st">'center'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="techSetupChallengePart2_files/figure-html/cell-3-output-1.png" width="585" height="431" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This demonstrates how Quarto can seamlessly integrate Python code and visualizations into professional documents that can be hosted publicly on GitHub Pages!</p>
+<ol start="3" type="1">
+<li><p><strong>💾 Save the file:</strong> Press <code>Ctrl+S</code> to save your new <code>index.qmd</code> file</p></li>
+<li><p><strong>🤖 Experience Cursor Magic:</strong> Let’s enhance your document:</p>
+<ul>
+<li><strong>Open the AI Chat:</strong> Press <code>Ctrl+L</code> to open Cursor’s AI chat panel</li>
+<li><strong>Ensure correct context:</strong> Make sure your <code>index.qmd</code> file is open and active</li>
+<li><strong>Ask Cursor to add content:</strong> Try prompts like:
+<ul>
+<li>“Add a scatter plot showing random data points”</li>
+<li>“Add a section explaining what matplotlib is and why it’s useful”</li>
+<li>“Add a pie chart with sample data”</li>
+</ul></li>
+<li><strong>Cursor will add the content directly to your file!</strong></li>
+</ul></li>
+</ol>
+<section id="render-your-document" class="level3">
+<h3 class="anchored" data-anchor-id="render-your-document">8. 🚀 Render Your Document</h3>
+<p><strong>Render the Quarto Document:</strong></p>
+<ol type="1">
+<li><p><strong>Make sure your virtual environment is activated</strong> (you should see <code>(venv)</code> in terminal)</p></li>
+<li><p><strong>💡 Pro Tip - Open Terminal in the Right Location:</strong></p>
+<ul>
+<li><strong>Right-click on your repository folder</strong> in the file explorer (left sidebar)</li>
+<li><strong>Select “Open in Integrated Terminal”</strong></li>
+<li>This automatically opens a terminal at the correct path - no need to navigate manually!</li>
+<li><strong>Alternative:</strong> Make sure you’re in your repository folder (you should see your <code>index.qmd</code> file when you type <code>ls</code> or <code>dir</code>)</li>
+</ul></li>
+<li><p><strong>Render the document:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render index.qmd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>You should see:</strong></p>
+<ul>
+<li>Output indicating the file was rendered successfully</li>
+<li>A new <code>index.html</code> file created in your folder</li>
+</ul></li>
+</ol>
+</section>
+<section id="preview-your-website-locally" class="level3">
+<h3 class="anchored" data-anchor-id="preview-your-website-locally">9. 👀 Preview Your Website Locally</h3>
+<p><strong>Using Live Preview Extension:</strong></p>
+<ol type="1">
+<li><strong>Right-click on <code>index.html</code></strong> in the file explorer</li>
+<li><strong>Select “Open with Live Server”</strong> (this should appear if Live Preview is installed)</li>
+<li><strong>Your browser will open</strong> showing your portfolio with live updates</li>
+<li><strong>Make changes to <code>index.qmd</code></strong> and re-render to see updates</li>
+</ol>
+<p><strong>Alternative Method:</strong></p>
+<ul>
+<li><strong>Right-click on <code>index.html</code></strong> → “Open with” → “Live Preview”</li>
+<li>Or use the Live Preview icon in the activity bar</li>
+</ul>
+<p><strong>Troubleshooting Preview Issues:</strong></p>
+<ul>
+<li>If Live Preview doesn’t work, try opening <code>index.html</code> directly in your browser</li>
+<li>Make sure you’ve rendered the document first with <code>quarto render index.qmd</code></li>
+<li>If the page looks broken, check that your virtual environment is activated</li>
+</ul>
+</section>
+<section id="commit-and-push-your-work" class="level3">
+<h3 class="anchored" data-anchor-id="commit-and-push-your-work">10. 🔄 Commit and Push Your Work</h3>
+<p><strong>Save Your Progress:</strong></p>
+<ol type="1">
+<li><strong>💾 Commit your work:</strong>
+<ul>
+<li>Press <code>Ctrl+Shift+G</code> → click “+” next to <code>index.qmd</code> and <code>index.html</code></li>
+<li>Write commit message: “Add Quarto portfolio with matplotlib visualizations”</li>
+<li>Click “Commit” (✓ icon)</li>
+</ul></li>
+<li><strong>Push to GitHub:</strong>
+<ul>
+<li>Click “Sync Changes” or “Push” to upload your work to GitHub</li>
+<li>Your repository now contains your portfolio files</li>
+</ul></li>
+</ol>
+</section>
+<section id="enable-github-pages" class="level3">
+<h3 class="anchored" data-anchor-id="enable-github-pages">11. 🌐 Enable GitHub Pages</h3>
+<p><strong>Make Your Portfolio Publicly Accessible:</strong></p>
+<ol type="1">
+<li><strong>Go to your GitHub repository</strong> in your web browser</li>
+<li><strong>Click “Settings”</strong> tab (at the top of your repository page)</li>
+<li><strong>Scroll down to “Pages”</strong> in the left sidebar</li>
+<li><strong>Under “Source”:</strong>
+<ul>
+<li>Select “Deploy from a branch”</li>
+<li>Choose “main” branch</li>
+<li>Select “/ (root)” folder</li>
+</ul></li>
+<li><strong>Click “Save”</strong></li>
+<li><strong>Wait 2-3 minutes</strong> for GitHub to build your site</li>
+<li><strong>Your portfolio will be available at:</strong> <code>https://YOUR_USERNAME.github.io/your-nickname-quarto-portfolio</code></li>
+</ol>
+</section>
+<section id="share-your-portfolio" class="level3">
+<h3 class="anchored" data-anchor-id="share-your-portfolio">12. 🎉 Share Your Portfolio</h3>
+<p><strong>Your portfolio is now live!</strong> You can:</p>
+<ul>
+<li><strong>Share the URL</strong> with others to showcase your work</li>
+<li><strong>Add more Quarto documents</strong> to your repository</li>
+<li><strong>Update your portfolio</strong> by editing <code>index.qmd</code>, re-rendering, and pushing changes</li>
+<li><strong>Use this as a foundation</strong> for future data visualization projects</li>
+</ul>
+</section>
+</section>
+<section id="congratulations-youre-done" class="level2">
+<h2 class="anchored" data-anchor-id="congratulations-youre-done">Congratulations! You’re Done! ✅</h2>
+<p>You’ve completed Part 2 of the tech setup challenge! You now have:</p>
+<ul>
+<li>A professional GitHub repository for your portfolio</li>
+<li>A complete Python environment with Quarto</li>
+<li>A publicly accessible website showcasing your data visualizations</li>
+<li>Experience with modern development workflows</li>
+</ul>
+</section>
+<section id="part-2-submission-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-submission-checklist">📋 Part 2 Submission Checklist</h2>
+<ul class="task-list">
+<li><label><input type="checkbox">Quarto installed and verified</label></li>
+<li><label><input type="checkbox">Quarto extension installed in Cursor AI (recommended)</label></li>
+<li><label><input type="checkbox">Live Preview extension installed in Cursor AI</label></li>
+<li><label><input type="checkbox">New GitHub repository created for portfolio</label></li>
+<li><label><input type="checkbox">Repository cloned to local computer</label></li>
+<li><label><input type="checkbox">Python virtual environment created in repository</label></li>
+<li><label><input type="checkbox">Virtual environment activated and packages installed (matplotlib, pandas, jupyter)</label></li>
+<li><label><input type="checkbox">Cursor AI configured to use virtual environment Python interpreter</label></li>
+<li><label><input type="checkbox">Portfolio Quarto document (<code>index.qmd</code>) created</label></li>
+<li><label><input type="checkbox">Matplotlib charts added to Quarto document (line chart and bar chart)</label></li>
+<li><label><input type="checkbox">AI-generated content added using Cursor AI</label></li>
+<li><label><input type="checkbox">Quarto document rendered to HTML successfully</label></li>
+<li><label><input type="checkbox">Local preview tested using Live Preview extension</label></li>
+<li><label><input type="checkbox">All files committed and pushed to GitHub</label></li>
+<li><label><input type="checkbox">GitHub Pages enabled for public hosting</label></li>
+<li><label><input type="checkbox">Portfolio URL shared and verified working</label></li>
+</ul>
+</section>
+<section id="what-youve-learned" class="level2">
+<h2 class="anchored" data-anchor-id="what-youve-learned">🎯 What You’ve Learned</h2>
+<section id="technical-skills" class="level3">
+<h3 class="anchored" data-anchor-id="technical-skills">Technical Skills:</h3>
+<ul>
+<li><strong>Repository Management</strong> = Creating and managing your own GitHub repositories</li>
+<li><strong>Virtual Environments</strong> = Isolated Python environments for clean package management</li>
+<li><strong>Quarto</strong> = Professional document creation with embedded code and visualizations</li>
+<li><strong>Matplotlib</strong> = Python library for creating charts and graphs</li>
+<li><strong>Live Preview</strong> = Real-time HTML preview during development</li>
+<li><strong>GitHub Pages</strong> = Free web hosting for static sites</li>
+<li><strong>Cursor AI Integration</strong> = Using AI to enhance your coding and documentation</li>
+</ul>
+</section>
+<section id="workflow-skills" class="level3">
+<h3 class="anchored" data-anchor-id="workflow-skills">Workflow Skills:</h3>
+<ul>
+<li><strong>Project Organization</strong> = Proper repository structure and file management</li>
+<li><strong>Environment Management</strong> = Setting up and managing Python environments</li>
+<li><strong>Document Rendering</strong> = Converting Quarto documents to HTML</li>
+<li><strong>Version Control</strong> = Committing and pushing changes to GitHub</li>
+<li><strong>Web Development</strong> = Creating and hosting professional websites</li>
+<li><strong>AI-Assisted Development</strong> = Using Cursor AI to enhance your work</li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting-common-issues" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting-common-issues">🆘 Troubleshooting Common Issues</h2>
+<section id="quarto-installation-issues" class="level3">
+<h3 class="anchored" data-anchor-id="quarto-installation-issues">Quarto Installation Issues</h3>
+<ul>
+<li><strong>If <code>quarto --version</code> doesn’t work:</strong> Make sure Quarto is in your system PATH. Restart your terminal/command prompt after installation.</li>
+<li><strong>If rendering fails:</strong> Check that your virtual environment is activated and packages are installed.</li>
+</ul>
+</section>
+<section id="virtual-environment-issues" class="level3">
+<h3 class="anchored" data-anchor-id="virtual-environment-issues">Virtual Environment Issues</h3>
+<ul>
+<li><strong>If activation fails:</strong> Make sure you’re in the correct directory and the <code>venv</code> folder exists.</li>
+<li><strong>If packages won’t install:</strong> Try <code>pip install --upgrade pip</code> first, then reinstall packages.</li>
+<li><strong>If Python interpreter not found:</strong> Make sure Python is installed and accessible from command line.</li>
+</ul>
+</section>
+<section id="powershell-issues" class="level3">
+<h3 class="anchored" data-anchor-id="powershell-issues">PowerShell Issues</h3>
+<ul>
+<li><strong>Execution policy error:</strong> Run <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code> in PowerShell as Administrator.</li>
+<li><strong>If activation script doesn’t work:</strong> Try using Command Prompt instead of PowerShell.</li>
+</ul>
+</section>
+<section id="github-pages-issues" class="level3">
+<h3 class="anchored" data-anchor-id="github-pages-issues">GitHub Pages Issues</h3>
+<ul>
+<li><strong>If your site doesn’t appear:</strong> Wait 5-10 minutes after enabling Pages, then check the URL.</li>
+<li><strong>If changes don’t show:</strong> Make sure you’ve committed and pushed your changes to GitHub.</li>
+</ul>
+</section>
+</section>
+<section id="need-help" class="level2">
+<h2 class="anchored" data-anchor-id="need-help">🆘 Need Help?</h2>
+<ul>
+<li><strong>Quarto Documentation:</strong> <a href="https://quarto.org/docs">quarto.org/docs</a></li>
+<li><strong>Matplotlib Tutorials:</strong> <a href="https://matplotlib.org/stable/tutorials/index.html">matplotlib.org/tutorials</a></li>
+<li><strong>Python Virtual Environments:</strong> <a href="https://docs.python.org/3/tutorial/venv.html">docs.python.org/3/tutorial/venv.html</a></li>
+<li><strong>GitHub Pages:</strong> <a href="https://docs.github.com/en/pages">docs.github.com/en/pages</a></li>
+<li><strong>Live Preview Extension:</strong> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server">marketplace.visualstudio.com/items?itemName=ms-vscode.live-server</a></li>
+<li><strong>Cursor Help:</strong> Built-in help and AI assistance. Note: Cursor is built on VS Code, so search “VS Code [your question]” for solutions</li>
+<li><strong>Ask questions in class or office hours!</strong></li>
+</ul>
+<p><strong>Total time to complete Part 2:</strong> ~60 minutes ⏱️</p>
+<hr>
+</section>
+<section id="why-these-tools-matter" class="level2">
+<h2 class="anchored" data-anchor-id="why-these-tools-matter">Why These Tools Matter 🎯</h2>
+<section id="in-the-real-world" class="level3">
+<h3 class="anchored" data-anchor-id="in-the-real-world">In the Real World:</h3>
+<ul>
+<li><strong>GitHub Repositories</strong> = Industry standard for project management and collaboration</li>
+<li><strong>Virtual Environments</strong> = Industry standard for Python project management</li>
+<li><strong>Quarto</strong> = Professional reporting and documentation (used by data scientists, analysts, researchers)</li>
+<li><strong>Matplotlib</strong> = Most popular Python visualization library</li>
+<li><strong>GitHub Pages</strong> = Free hosting for portfolios, documentation, and project websites</li>
+<li><strong>Live Preview</strong> = Modern development workflow for web projects</li>
+<li><strong>AI-Assisted Development</strong> = Modern approach to coding and documentation</li>
+</ul>
+</section>
+<section id="for-this-course" class="level3">
+<h3 class="anchored" data-anchor-id="for-this-course">For This Course:</h3>
+<ul>
+<li><strong>All future challenges</strong> will use Quarto for reports</li>
+<li><strong>Data visualizations</strong> will be created with matplotlib and other Python libraries</li>
+<li><strong>Virtual environments</strong> will keep your projects organized and reproducible</li>
+<li><strong>Professional presentation</strong> of your analytical work</li>
+<li><strong>Portfolio development</strong> for showcasing your skills to employers</li>
+</ul>
+<p>You’re now equipped with the essential tools for modern data analytics and have a professional portfolio to showcase your work! 🌍</p>
+<p><strong>💡 Pro Tip:</strong> This repository and workflow will serve as the foundation for all your future analytics projects in this course and beyond!</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
