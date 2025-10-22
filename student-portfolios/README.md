@@ -23,6 +23,7 @@ This README is automatically generated and updated when changes are made to stud
 | RaheelU | Raheel | Enjoy traveling and hiking<br>Philadelphia sports fan - Go Birds!! | [View Portfolio](RaheelU/README.md) | N/A | <img src="RaheelU/Indonesia_waterfall.jpg" alt="Waterfall hike in Indonesia" title="Waterfall hike in Indonesia" width="150"> |
 | Raj | Raj | Born on the auspicious day of Diwali which happens...<br>loves to cook for my friends and family.🚴 | [View Portfolio](Raj/README.md) | N/A | <img src="Raj/IMG_3518.jpeg" alt="Hershey" title="Hershey" width="150"> |
 | RameshG | Ramesh | Love Gardening<br>Like to Travel and hike | [View Portfolio](RameshG/README.md) | N/A | <img src="RameshG/RameshG_Hershey.jpeg" alt="Hershey" title="Hershey" width="150"> |
+| RaushonK | Raushon | I love thriller movies.<br>I like traveling with my family. | [View Portfolio](RaushonK/README.md) | N/A | <img src="RaushonK/IMG_2082.jpg" alt="Personal Photo" title="Personal Photo" width="150"> |
 | RaviM | Ravi | Enjoy coding<br>Watching movies | [View Portfolio](RaviM/README.md) | N/A | No images |
 | RohitT | RohitT | I value time with family, especially my daughter<br>I believe small improvements every day make a big ... | [View Portfolio](RohitT/README.md) | N/A | <img src="RohitT/./holiday_photo.jpg" alt="Holiday Photo" title="Holiday Photo" width="150"> |
 | SidJena | Sid | My favorite band growing up was The Backstreet Boy...<br>I play a lot of sports. | [View Portfolio](SidJena/README.md) | N/A | <img src="SidJena/MyTeam.jpeg" alt="MySportTeam" title="MySportTeam" width="150"> |
@@ -70,4 +71,4 @@ This README is automatically generated and updated when changes are made to stud
 This README is automatically updated via GitHub Actions whenever any `README.md` file in the student-portfolios folder (or its subfolders) is modified.
 
 ---
-*Last updated: %Y->- (HEAD -> main, origin/main) 5a9ebfb78a4dcdb3580b6a76c77a65f1071d8f57:%M:HEAD*
+*Last updated: %Y->- 91e1a9716e1f73981b54adece0c80cb703d37cb8:%M:HEAD*
