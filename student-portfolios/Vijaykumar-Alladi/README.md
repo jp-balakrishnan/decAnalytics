@@ -15,5 +15,7 @@
 ## 🖼️ Portfolio Images
 
 ### Michael schumacher ferrari f1 driver
+![Michael schumacher](michael.jpeg)
 
-### magnus carlsen - chess player
+### magnus carlsen - chess grand master
+![Magnus Carlsen](magnus.jpeg)
