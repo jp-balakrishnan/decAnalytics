@@ -1,866 +1,204 @@
 ---
-title: "Random Forests Challenge"
-subtitle: "The Power of Weak Learners"
+title: "DAFT Package Challenge"
+subtitle: "Visualizing the Scurvy Data Generating Process"
 format:
   html: default
-  pdf: default
 execute:
   echo: true
   eval: true
 ---
 
-# Random Forest Challenge: From Weak to Strong Learners
+# DAFT Package Challenge: Beautiful Probabilistic Graphical Models
 
-## The Problem: Can Many Weak Learners Beat One Strong Learner?
+## The Challenge: Make Scurvy History Beautiful
 
-**Core Question:** How does the number of trees in a random forest affect predictive accuracy, and how do random forests compare to simpler approaches like linear regression?
+**Core Question:** How can we use the DAFT package to create visually appealing Directed Acyclic Graphs (DAGs) that tell a compelling data story?
 
-**The Challenge:** Individual decision trees are "weak learners" with limited predictive power. Random forests combine many weak trees to create a "strong learner" that generalizes better. But how many trees do we need? Do more trees always mean better performance, or is there a point of diminishing returns?
+**The Challenge:** You'll reproduce and enhance the scurvy DAG from the course materials, learning how to customize colors, shapes, and styling to make your probabilistic graphical models more attractive and informative.
 
-**Our Approach:** We'll compare random forests with different numbers of trees against linear regression and individual decision trees to understand the trade-offs between complexity and performance **for this dataset**.
+**Learning Objectives:** By the end of this 30-minute challenge, you'll be able to:
+- Install and import the DAFT package
+- Create basic probabilistic graphical models
+- Customize node colors, shapes, and styling
+- Use the DAFT documentation effectively
 
-## Data and Methodology
+## Background: The Scurvy Story
 
-We analyze the Ames Housing dataset, which contains detailed information about residential properties sold in Ames, Iowa from 2006 to 2010. This dataset is ideal for our analysis because:
+Scurvy was a devastating disease that affected sailors on long voyages. The cure was discovered in 1747, but due to a misunderstanding about the cause, the cure was lost for over 150 years. The story involves three different understandings of the data generating process:
 
-- **Anticipated Non-linear Relationships:** Real estate prices have complex, non-linear relationships between features (e.g., square footage in wealthy vs. poor zip codes affects price differently)
-- **Mixed Data Types:** Contains both categorical (zipCode) and numerical variables
-- **Real-world Complexity:** Captures the kind of messy, real-world data where ensemble methods excel
+1. **1747 Understanding:** Lemons prevent scurvy (correct!)
+2. **Misguided Belief:** Acid kills bacteria that causes scurvy (wrong!)
+3. **1928 Understanding:** Vitamin C prevents scurvy (the real mechanism)
 
-Since we anticipate non-linear relationships, random forests are well-suited to model the relationship between features and sale price.
+## Your Mission: Create a Beautiful Scurvy DAG
 
-::: {.panel-tabset}
+Your task is to recreate the 1928 understanding of scurvy using DAFT, but make it visually stunning with custom colors and styling.
 
-### R
+### Step 1: Environment Setup
 
-```{r}
-#| label: load-and-model-r
-#| echo: true
-#| message: false
-#| warning: false
+First, let's install the DAFT package in your virtual environment:
 
-# Load libraries
-suppressPackageStartupMessages(library(tidyverse))
-suppressPackageStartupMessages(library(randomForest))
-
-# Load data
-sales_data <- read.csv("https://raw.githubusercontent.com/flyaflya/buad442Fall2025/refs/heads/main/datasets/salesPriceData.csv")
-
-# Prepare model data
-model_data <- sales_data %>%
-  select(SalePrice, LotArea, YearBuilt, GrLivArea, FullBath, HalfBath, 
-         BedroomAbvGr, TotRmsAbvGrd, GarageCars, zipCode) %>%
-  # Convert zipCode to factor (categorical variable) - important for proper modeling
-  mutate(zipCode = as.factor(zipCode)) %>%
-  na.omit()
-
-cat("Data prepared with zipCode as categorical variable\n")
-cat("Number of unique zip codes:", length(unique(model_data$zipCode)), "\n")
-
-# Split data
-set.seed(123)
-train_indices <- sample(1:nrow(model_data), 0.8 * nrow(model_data))
-train_data <- model_data[train_indices, ]
-test_data <- model_data[-train_indices, ]
-
-# Build random forests with different numbers of trees (with corrected categorical zipCode)
-rf_1 <- randomForest(SalePrice ~ ., data = train_data, ntree = 1, mtry = 3, seed = 123)
-rf_5 <- randomForest(SalePrice ~ ., data = train_data, ntree = 5, mtry = 3, seed = 123)
-rf_25 <- randomForest(SalePrice ~ ., data = train_data, ntree = 25, mtry = 3, seed = 123)
-rf_100 <- randomForest(SalePrice ~ ., data = train_data, ntree = 100, mtry = 3, seed = 123)
-rf_500 <- randomForest(SalePrice ~ ., data = train_data, ntree = 500, mtry = 3, seed = 123)
-rf_1000 <- randomForest(SalePrice ~ ., data = train_data, ntree = 1000, mtry = 3, seed = 123)
-rf_2000 <- randomForest(SalePrice ~ ., data = train_data, ntree = 2000, mtry = 3, seed = 123)
-rf_5000 <- randomForest(SalePrice ~ ., data = train_data, ntree = 5000, mtry = 3, seed = 123)
+```bash
+pip install 'daft-pgm'
 ```
 
-### Python
+### Step 2: Basic DAG Creation
+
+Start by creating a simple DAG that shows the relationship between Vitamin C and scurvy prevention:
 
 ```{python}
-#| label: load-and-model-python
+#| label: basic-dag
 #| echo: true
 
-import pandas as pd
-import numpy as np
+import daft
 import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
-import warnings
-warnings.filterwarnings('ignore')
 
-# Load data
-sales_data = pd.read_csv("https://raw.githubusercontent.com/flyaflya/buad442Fall2025/refs/heads/main/datasets/salesPriceData.csv")
+# Create the PGM object
+pgm = daft.PGM(dpi=150)
 
-# Prepare model data
-model_vars = ['SalePrice', 'LotArea', 'YearBuilt', 'GrLivArea', 'FullBath', 
-              'HalfBath', 'BedroomAbvGr', 'TotRmsAbvGrd', 'GarageCars', 'zipCode']
-model_data = sales_data[model_vars].dropna()
+# Add nodes for our scurvy model
+pgm.add_node("vitamin_c", "Vitamin C\nIntake", 1, 2)
+pgm.add_node("scurvy", "Scurvy\nPrevention", 1, 1)
+pgm.add_node("health", "Sailor\nHealth", 1, 0)
 
-# Convert zipCode to categorical variable - important for proper modeling
-model_data['zipCode'] = model_data['zipCode'].astype('category')
+# Add edges to show relationships
+pgm.add_edge("vitamin_c", "scurvy")
+pgm.add_edge("scurvy", "health")
 
-# Split data
-X = model_data.drop('SalePrice', axis=1)
-y = model_data['SalePrice']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
-
-# Build random forests with different numbers of trees (with corrected categorical zipCode)
-rf_1 = RandomForestRegressor(n_estimators=1, max_features=3, random_state=123)
-rf_5 = RandomForestRegressor(n_estimators=5, max_features=3, random_state=123)
-rf_25 = RandomForestRegressor(n_estimators=25, max_features=3, random_state=123)
-rf_100 = RandomForestRegressor(n_estimators=100, max_features=3, random_state=123)
-rf_500 = RandomForestRegressor(n_estimators=500, max_features=3, random_state=123)
-rf_1000 = RandomForestRegressor(n_estimators=1000, max_features=3, random_state=123)
-rf_2000 = RandomForestRegressor(n_estimators=2000, max_features=3, random_state=123)
-rf_5000 = RandomForestRegressor(n_estimators=5000, max_features=3, random_state=123)
-
-# Fit all models
-rf_1.fit(X_train, y_train)
-rf_5.fit(X_train, y_train)
-rf_25.fit(X_train, y_train)
-rf_100.fit(X_train, y_train)
-rf_500.fit(X_train, y_train)
-rf_1000.fit(X_train, y_train)
-rf_2000.fit(X_train, y_train)
-rf_5000.fit(X_train, y_train)
+# Render the basic DAG
+pgm.render();
 ```
 
-:::
+### Step 3: Make It Beautiful
 
-## Results: The Power of Ensemble Learning
-
-Our analysis reveals a clear pattern: **more trees consistently improve performance**. Let's examine the results and understand why this happens.
-
-### Performance Trends
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: performance-comparison-r
-#| echo: true
-#| message: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 6
-
-# Calculate predictions and performance metrics for test data
-predictions_1_test <- predict(rf_1, test_data)
-predictions_5_test <- predict(rf_5, test_data)
-predictions_25_test <- predict(rf_25, test_data)
-predictions_100_test <- predict(rf_100, test_data)
-predictions_500_test <- predict(rf_500, test_data)
-predictions_1000_test <- predict(rf_1000, test_data)
-predictions_2000_test <- predict(rf_2000, test_data)
-predictions_5000_test <- predict(rf_5000, test_data)
-
-# Calculate predictions for training data
-predictions_1_train <- predict(rf_1, train_data)
-predictions_5_train <- predict(rf_5, train_data)
-predictions_25_train <- predict(rf_25, train_data)
-predictions_100_train <- predict(rf_100, train_data)
-predictions_500_train <- predict(rf_500, train_data)
-predictions_1000_train <- predict(rf_1000, train_data)
-predictions_2000_train <- predict(rf_2000, train_data)
-predictions_5000_train <- predict(rf_5000, train_data)
-
-# Calculate RMSE for test data
-rmse_1_test <- sqrt(mean((test_data$SalePrice - predictions_1_test)^2))
-rmse_5_test <- sqrt(mean((test_data$SalePrice - predictions_5_test)^2))
-rmse_25_test <- sqrt(mean((test_data$SalePrice - predictions_25_test)^2))
-rmse_100_test <- sqrt(mean((test_data$SalePrice - predictions_100_test)^2))
-rmse_500_test <- sqrt(mean((test_data$SalePrice - predictions_500_test)^2))
-rmse_1000_test <- sqrt(mean((test_data$SalePrice - predictions_1000_test)^2))
-rmse_2000_test <- sqrt(mean((test_data$SalePrice - predictions_2000_test)^2))
-rmse_5000_test <- sqrt(mean((test_data$SalePrice - predictions_5000_test)^2))
-
-# Calculate RMSE for training data
-rmse_1_train <- sqrt(mean((train_data$SalePrice - predictions_1_train)^2))
-rmse_5_train <- sqrt(mean((train_data$SalePrice - predictions_5_train)^2))
-rmse_25_train <- sqrt(mean((train_data$SalePrice - predictions_25_train)^2))
-rmse_100_train <- sqrt(mean((train_data$SalePrice - predictions_100_train)^2))
-rmse_500_train <- sqrt(mean((train_data$SalePrice - predictions_500_train)^2))
-rmse_1000_train <- sqrt(mean((train_data$SalePrice - predictions_1000_train)^2))
-rmse_2000_train <- sqrt(mean((train_data$SalePrice - predictions_2000_train)^2))
-rmse_5000_train <- sqrt(mean((train_data$SalePrice - predictions_5000_train)^2))
-
-# Calculate R-squared
-r2_1 <- 1 - sum((test_data$SalePrice - predictions_1_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_5 <- 1 - sum((test_data$SalePrice - predictions_5_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_25 <- 1 - sum((test_data$SalePrice - predictions_25_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_100 <- 1 - sum((test_data$SalePrice - predictions_100_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_500 <- 1 - sum((test_data$SalePrice - predictions_500_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_1000 <- 1 - sum((test_data$SalePrice - predictions_1000_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_2000 <- 1 - sum((test_data$SalePrice - predictions_2000_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_5000 <- 1 - sum((test_data$SalePrice - predictions_5000_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-
-# Create performance comparison
-performance_df <- data.frame(
-  Trees = c(1, 5, 25, 100, 500, 1000, 2000, 5000),
-  RMSE_Test = c(rmse_1_test, rmse_5_test, rmse_25_test, rmse_100_test, rmse_500_test, rmse_1000_test, rmse_2000_test, rmse_5000_test),
-  RMSE_Train = c(rmse_1_train, rmse_5_train, rmse_25_train, rmse_100_train, rmse_500_train, rmse_1000_train, rmse_2000_train, rmse_5000_train),
-  R_squared = c(r2_1, r2_5, r2_25, r2_100, r2_500, r2_1000, r2_2000, r2_5000)
-)
-
-print(performance_df)
-```
-
-### Python
+Now let's enhance the visual appeal by customizing colors and styling. Use the DAFT documentation to explore different `plot_params` options:
 
 ```{python}
-#| label: performance-comparison-python
+#| label: beautiful-dag
 #| echo: true
-#| fig-width: 10
-#| fig-height: 6
 
-# Calculate predictions for test data
-predictions_1_test = rf_1.predict(X_test)
-predictions_5_test = rf_5.predict(X_test)
-predictions_25_test = rf_25.predict(X_test)
-predictions_100_test = rf_100.predict(X_test)
-predictions_500_test = rf_500.predict(X_test)
-predictions_1000_test = rf_1000.predict(X_test)
-predictions_2000_test = rf_2000.predict(X_test)
-predictions_5000_test = rf_5000.predict(X_test)
+# Create a new, more beautiful PGM
+pgm_beautiful = daft.PGM(dpi=150, alternate_style="outer")
 
-# Calculate predictions for training data
-predictions_1_train = rf_1.predict(X_train)
-predictions_5_train = rf_5.predict(X_train)
-predictions_25_train = rf_25.predict(X_train)
-predictions_100_train = rf_100.predict(X_train)
-predictions_500_train = rf_500.predict(X_train)
-predictions_1000_train = rf_1000.predict(X_train)
-predictions_2000_train = rf_2000.predict(X_train)
-predictions_5000_train = rf_5000.predict(X_train)
+# Add nodes with custom styling
+pgm_beautiful.add_node("vitamin_c", "Vitamin C\nIntake", 1, 2, 
+                       plot_params={'facecolor': 'lightgreen', 'edgecolor': 'darkgreen', 'linewidth': 2})
 
-# Calculate performance metrics for test data
-rmse_1_test = np.sqrt(mean_squared_error(y_test, predictions_1_test))
-rmse_5_test = np.sqrt(mean_squared_error(y_test, predictions_5_test))
-rmse_25_test = np.sqrt(mean_squared_error(y_test, predictions_25_test))
-rmse_100_test = np.sqrt(mean_squared_error(y_test, predictions_100_test))
-rmse_500_test = np.sqrt(mean_squared_error(y_test, predictions_500_test))
-rmse_1000_test = np.sqrt(mean_squared_error(y_test, predictions_1000_test))
-rmse_2000_test = np.sqrt(mean_squared_error(y_test, predictions_2000_test))
-rmse_5000_test = np.sqrt(mean_squared_error(y_test, predictions_5000_test))
+pgm_beautiful.add_node("scurvy", "Scurvy\nPrevention", 1, 1, 
+                       plot_params={'facecolor': 'lightblue', 'edgecolor': 'darkblue', 'linewidth': 2})
 
-# Calculate performance metrics for training data
-rmse_1_train = np.sqrt(mean_squared_error(y_train, predictions_1_train))
-rmse_5_train = np.sqrt(mean_squared_error(y_train, predictions_5_train))
-rmse_25_train = np.sqrt(mean_squared_error(y_train, predictions_25_train))
-rmse_100_train = np.sqrt(mean_squared_error(y_train, predictions_100_train))
-rmse_500_train = np.sqrt(mean_squared_error(y_train, predictions_500_train))
-rmse_1000_train = np.sqrt(mean_squared_error(y_train, predictions_1000_train))
-rmse_2000_train = np.sqrt(mean_squared_error(y_train, predictions_2000_train))
-rmse_5000_train = np.sqrt(mean_squared_error(y_train, predictions_5000_train))
+pgm_beautiful.add_node("health", "Sailor\nHealth", 1, 0, 
+                       plot_params={'facecolor': 'lightcoral', 'edgecolor': 'darkred', 'linewidth': 2})
 
-r2_1 = r2_score(y_test, predictions_1_test)
-r2_5 = r2_score(y_test, predictions_5_test)
-r2_25 = r2_score(y_test, predictions_25_test)
-r2_100 = r2_score(y_test, predictions_100_test)
-r2_500 = r2_score(y_test, predictions_500_test)
-r2_1000 = r2_score(y_test, predictions_1000_test)
-r2_2000 = r2_score(y_test, predictions_2000_test)
-r2_5000 = r2_score(y_test, predictions_5000_test)
+# Add edges with custom styling
+pgm_beautiful.add_edge("vitamin_c", "scurvy", plot_params={'color': 'green', 'linewidth': 3})
+pgm_beautiful.add_edge("scurvy", "health", plot_params={'color': 'blue', 'linewidth': 3})
 
-# Create performance comparison
-performance_data = {
-    'Trees': [1, 5, 25, 100, 500, 1000, 2000, 5000],
-    'RMSE_Test': [rmse_1_test, rmse_5_test, rmse_25_test, rmse_100_test, rmse_500_test, rmse_1000_test, rmse_2000_test, rmse_5000_test],
-    'RMSE_Train': [rmse_1_train, rmse_5_train, rmse_25_train, rmse_100_train, rmse_500_train, rmse_1000_train, rmse_2000_train, rmse_5000_train],
-    'R_squared': [r2_1, r2_5, r2_25, r2_100, r2_500, r2_1000, r2_2000, r2_5000]
-}
-
-performance_df = pd.DataFrame(performance_data)
-print(performance_df)
+# Render the beautiful DAG
+pgm_beautiful.render();
 ```
 
-:::
+### Step 4: Add Historical Context
 
-## Performance Visualization: The Power of More Trees
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: performance-plot-r
-#| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 6
-
-# Create performance visualization
-library(ggplot2)
-
-# Plot RMSE vs Number of Trees
-p1 <- ggplot(performance_df, aes(x = Trees, y = RMSE_Test)) +
-  geom_line(color = "red", size = 1.2) +
-  geom_point(color = "red", size = 3) +
-  labs(title = "RMSE Decreases with More Trees",
-       x = "Number of Trees", y = "RMSE") +
-  theme_minimal() +
-  scale_x_log10()
-
-# Plot R-squared vs Number of Trees
-p2 <- ggplot(performance_df, aes(x = Trees, y = R_squared)) +
-  geom_line(color = "blue", size = 1.2) +
-  geom_point(color = "blue", size = 3) +
-  labs(title = "R-squared Increases with More Trees",
-       x = "Number of Trees", y = "R-squared") +
-  theme_minimal() +
-  scale_x_log10()
-
-# Combine plots
-library(gridExtra)
-grid.arrange(p1, p2, ncol = 2)
-```
-
-### Python
+Let's create a more complex DAG that shows the historical progression of understanding:
 
 ```{python}
-#| label: performance-plot-python
-#| echo: false
-#| fig-width: 10
-#| fig-height: 6
-
-# Create performance visualization
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-# Plot RMSE vs Number of Trees
-ax1.plot(performance_df['Trees'], performance_df['RMSE_Test'], 'ro-', linewidth=2, markersize=8)
-ax1.set_xlabel('Number of Trees')
-ax1.set_ylabel('RMSE')
-ax1.set_title('RMSE Decreases with More Trees')
-ax1.set_xscale('log')
-ax1.grid(True, alpha=0.3)
-
-# Plot R-squared vs Number of Trees
-ax2.plot(performance_df['Trees'], performance_df['R_squared'], 'bo-', linewidth=2, markersize=8)
-ax2.set_xlabel('Number of Trees')
-ax2.set_ylabel('R-squared')
-ax2.set_title('R-squared Increases with More Trees')
-ax2.set_xscale('log')
-ax2.grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.show()
-```
-
-:::
-
-The results show a clear trend: as we increase the number of trees from 1 to 5,000, both RMSE decreases and R-squared increases. This demonstrates the fundamental principle of ensemble learning analogous to the 'wisdom of crowds' phenomenon.
-
-### Important Notes on Random Forest Performance
-
-**The Ensemble Effect:** Individual decision trees make many errors, but when combined, their errors cancel out. This is why random forests with more trees consistently outperform those with fewer trees.
-
-**No Overfitting:** Unlike other algorithms, adding more trees to a random forest doesn't cause overfitting - it only improves performance.
-
-**Diminishing Returns:** While more trees always help, the improvement becomes smaller as we add more trees.
-
-## The Overfitting Problem: Why Random Forests Are Different
-
-To understand why random forests are so powerful, let's compare them with individual decision trees of increasing complexity.
-
-### The Problem with Single Trees
-
-As we make individual trees more complex (deeper, more splits), they start to memorize the training data and perform worse on new data. This is classic overfitting.
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: decision-tree-comparison-r
-#| echo: true
-#| message: false
-#| warning: false
-
-# Build decision trees with increasing complexity (with corrected categorical zipCode)
-library(rpart)
-tree_simple <- rpart(SalePrice ~ ., data = train_data, 
-                     control = rpart.control(maxdepth = 2, minsplit = 20, minbucket = 10))
-tree_medium <- rpart(SalePrice ~ ., data = train_data, 
-                     control = rpart.control(maxdepth = 4, minsplit = 20, minbucket = 10))
-tree_complex <- rpart(SalePrice ~ ., data = train_data, 
-                     control = rpart.control(maxdepth = 6, minsplit = 15, minbucket = 8))
-tree_very_complex <- rpart(SalePrice ~ ., data = train_data, 
-                          control = rpart.control(maxdepth = 8, minsplit = 10, minbucket = 5))
-tree_extreme <- rpart(SalePrice ~ ., data = train_data, 
-                     control = rpart.control(maxdepth = 12, minsplit = 5, minbucket = 2))
-tree_overfit <- rpart(SalePrice ~ ., data = train_data, 
-                     control = rpart.control(maxdepth = 20, minsplit = 2, minbucket = 1))
-
-# Calculate predictions for test data
-pred_simple_test <- predict(tree_simple, test_data)
-pred_medium_test <- predict(tree_medium, test_data)
-pred_complex_test <- predict(tree_complex, test_data)
-pred_very_complex_test <- predict(tree_very_complex, test_data)
-pred_extreme_test <- predict(tree_extreme, test_data)
-pred_overfit_test <- predict(tree_overfit, test_data)
-
-# Calculate predictions for training data
-pred_simple_train <- predict(tree_simple, train_data)
-pred_medium_train <- predict(tree_medium, train_data)
-pred_complex_train <- predict(tree_complex, train_data)
-pred_very_complex_train <- predict(tree_very_complex, train_data)
-pred_extreme_train <- predict(tree_extreme, train_data)
-pred_overfit_train <- predict(tree_overfit, train_data)
-
-# Calculate RMSE for test data
-rmse_tree_simple_test <- sqrt(mean((test_data$SalePrice - pred_simple_test)^2))
-rmse_tree_medium_test <- sqrt(mean((test_data$SalePrice - pred_medium_test)^2))
-rmse_tree_complex_test <- sqrt(mean((test_data$SalePrice - pred_complex_test)^2))
-rmse_tree_very_complex_test <- sqrt(mean((test_data$SalePrice - pred_very_complex_test)^2))
-rmse_tree_extreme_test <- sqrt(mean((test_data$SalePrice - pred_extreme_test)^2))
-rmse_tree_overfit_test <- sqrt(mean((test_data$SalePrice - pred_overfit_test)^2))
-
-# Calculate RMSE for training data
-rmse_tree_simple_train <- sqrt(mean((train_data$SalePrice - pred_simple_train)^2))
-rmse_tree_medium_train <- sqrt(mean((train_data$SalePrice - pred_medium_train)^2))
-rmse_tree_complex_train <- sqrt(mean((train_data$SalePrice - pred_complex_train)^2))
-rmse_tree_very_complex_train <- sqrt(mean((train_data$SalePrice - pred_very_complex_train)^2))
-rmse_tree_extreme_train <- sqrt(mean((train_data$SalePrice - pred_extreme_train)^2))
-rmse_tree_overfit_train <- sqrt(mean((train_data$SalePrice - pred_overfit_train)^2))
-
-# Calculate R-squared for test data
-r2_tree_simple <- 1 - sum((test_data$SalePrice - pred_simple_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_tree_medium <- 1 - sum((test_data$SalePrice - pred_medium_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_tree_complex <- 1 - sum((test_data$SalePrice - pred_complex_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_tree_very_complex <- 1 - sum((test_data$SalePrice - pred_very_complex_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_tree_extreme <- 1 - sum((test_data$SalePrice - pred_extreme_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-r2_tree_overfit <- 1 - sum((test_data$SalePrice - pred_overfit_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
-
-# Create comparison data frame
-tree_comparison <- data.frame(
-  Model = c("Simple Tree", "Medium Tree", "Complex Tree", "Very Complex Tree", "Extreme Tree", "Overfit Tree"),
-  Max_Depth = c(2, 4, 6, 8, 12, 20),
-  RMSE_Test = c(rmse_tree_simple_test, rmse_tree_medium_test, rmse_tree_complex_test, rmse_tree_very_complex_test, rmse_tree_extreme_test, rmse_tree_overfit_test),
-  RMSE_Train = c(rmse_tree_simple_train, rmse_tree_medium_train, rmse_tree_complex_train, rmse_tree_very_complex_train, rmse_tree_extreme_train, rmse_tree_overfit_train),
-  R_squared = c(r2_tree_simple, r2_tree_medium, r2_tree_complex, r2_tree_very_complex, r2_tree_extreme, r2_tree_overfit)
-)
-
-print("Decision Tree Performance (showing overfitting):")
-print(tree_comparison)
-```
-
-### Python
-
-```{python}
-#| label: decision-tree-comparison-python
+#| label: historical-dag
 #| echo: true
 
-# Build decision trees with increasing complexity (with corrected categorical zipCode)
-from sklearn.tree import DecisionTreeRegressor
+# Create a historical DAG showing the evolution of understanding
+pgm_historical = daft.PGM(dpi=150, alternate_style="outer")
 
-tree_simple = DecisionTreeRegressor(max_depth=2, min_samples_split=20, min_samples_leaf=10, random_state=123)
-tree_medium = DecisionTreeRegressor(max_depth=4, min_samples_split=20, min_samples_leaf=10, random_state=123)
-tree_complex = DecisionTreeRegressor(max_depth=6, min_samples_split=15, min_samples_leaf=8, random_state=123)
-tree_very_complex = DecisionTreeRegressor(max_depth=8, min_samples_split=10, min_samples_leaf=5, random_state=123)
-tree_extreme = DecisionTreeRegressor(max_depth=12, min_samples_split=5, min_samples_leaf=2, random_state=123)
-tree_overfit = DecisionTreeRegressor(max_depth=20, min_samples_split=2, min_samples_leaf=1, random_state=123)
+# 1747 Understanding (correct but incomplete)
+pgm_historical.add_node("lemons_1747", "Lemons\n(1747)", 0.5, 2, 
+                        plot_params={'facecolor': 'yellow', 'edgecolor': 'orange', 'linewidth': 2})
 
-# Fit models
-tree_simple.fit(X_train, y_train)
-tree_medium.fit(X_train, y_train)
-tree_complex.fit(X_train, y_train)
-tree_very_complex.fit(X_train, y_train)
-tree_extreme.fit(X_train, y_train)
-tree_overfit.fit(X_train, y_train)
+# Misguided belief
+pgm_historical.add_node("acid_belief", "Acid Kills\nBacteria", 1.5, 2, 
+                        plot_params={'facecolor': 'lightgray', 'edgecolor': 'gray', 'linewidth': 2})
 
-# Calculate predictions for test data
-pred_simple_test = tree_simple.predict(X_test)
-pred_medium_test = tree_medium.predict(X_test)
-pred_complex_test = tree_complex.predict(X_test)
-pred_very_complex_test = tree_very_complex.predict(X_test)
-pred_extreme_test = tree_extreme.predict(X_test)
-pred_overfit_test = tree_overfit.predict(X_test)
+# 1928 Understanding (complete)
+pgm_historical.add_node("vitamin_c_1928", "Vitamin C\n(1928)", 2.5, 2, 
+                        plot_params={'facecolor': 'lightgreen', 'edgecolor': 'darkgreen', 'linewidth': 2})
 
-# Calculate predictions for training data
-pred_simple_train = tree_simple.predict(X_train)
-pred_medium_train = tree_medium.predict(X_train)
-pred_complex_train = tree_complex.predict(X_train)
-pred_very_complex_train = tree_very_complex.predict(X_train)
-pred_extreme_train = tree_extreme.predict(X_train)
-pred_overfit_train = tree_overfit.predict(X_train)
+# Common outcome
+pgm_historical.add_node("scurvy_prevention", "Scurvy\nPrevention", 1.5, 1, 
+                        plot_params={'facecolor': 'lightblue', 'edgecolor': 'darkblue', 'linewidth': 2})
 
-# Calculate performance metrics for test data
-rmse_tree_simple_test = np.sqrt(mean_squared_error(y_test, pred_simple_test))
-rmse_tree_medium_test = np.sqrt(mean_squared_error(y_test, pred_medium_test))
-rmse_tree_complex_test = np.sqrt(mean_squared_error(y_test, pred_complex_test))
-rmse_tree_very_complex_test = np.sqrt(mean_squared_error(y_test, pred_very_complex_test))
-rmse_tree_extreme_test = np.sqrt(mean_squared_error(y_test, pred_extreme_test))
-rmse_tree_overfit_test = np.sqrt(mean_squared_error(y_test, pred_overfit_test))
+# Add edges
+pgm_historical.add_edge("lemons_1747", "scurvy_prevention", plot_params={'color': 'green', 'linewidth': 2})
+pgm_historical.add_edge("acid_belief", "scurvy_prevention", plot_params={'color': 'red', 'linewidth': 2, 'linestyle': '--'})
+pgm_historical.add_edge("vitamin_c_1928", "scurvy_prevention", plot_params={'color': 'blue', 'linewidth': 3})
 
-# Calculate performance metrics for training data
-rmse_tree_simple_train = np.sqrt(mean_squared_error(y_train, pred_simple_train))
-rmse_tree_medium_train = np.sqrt(mean_squared_error(y_train, pred_medium_train))
-rmse_tree_complex_train = np.sqrt(mean_squared_error(y_train, pred_complex_train))
-rmse_tree_very_complex_train = np.sqrt(mean_squared_error(y_train, pred_very_complex_train))
-rmse_tree_extreme_train = np.sqrt(mean_squared_error(y_train, pred_extreme_train))
-rmse_tree_overfit_train = np.sqrt(mean_squared_error(y_train, pred_overfit_train))
+# Add a plate to show this affects many sailors
+pgm_historical.add_plate([0.2, 0.5, 2.6, 0.8], label="All Sailors", shift=-0.1)
 
-r2_tree_simple = r2_score(y_test, pred_simple_test)
-r2_tree_medium = r2_score(y_test, pred_medium_test)
-r2_tree_complex = r2_score(y_test, pred_complex_test)
-r2_tree_very_complex = r2_score(y_test, pred_very_complex_test)
-r2_tree_extreme = r2_score(y_test, pred_extreme_test)
-r2_tree_overfit = r2_score(y_test, pred_overfit_test)
-
-# Create comparison data frame
-tree_comparison_data = {
-    'Model': ['Simple Tree', 'Medium Tree', 'Complex Tree', 'Very Complex Tree', 'Extreme Tree', 'Overfit Tree'],
-    'Max_Depth': [2, 4, 6, 8, 12, 20],
-    'RMSE_Test': [rmse_tree_simple_test, rmse_tree_medium_test, rmse_tree_complex_test, rmse_tree_very_complex_test, rmse_tree_extreme_test, rmse_tree_overfit_test],
-    'RMSE_Train': [rmse_tree_simple_train, rmse_tree_medium_train, rmse_tree_complex_train, rmse_tree_very_complex_train, rmse_tree_extreme_train, rmse_tree_overfit_train],
-    'R_squared': [r2_tree_simple, r2_tree_medium, r2_tree_complex, r2_tree_very_complex, r2_tree_extreme, r2_tree_overfit]
-}
-
-tree_comparison_df = pd.DataFrame(tree_comparison_data)
-print("Decision Tree Performance (showing overfitting):")
-print(tree_comparison_df)
+# Render the historical DAG
+pgm_historical.render();
 ```
 
-:::
-
-### The Overfitting Visualization
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: overfitting-plot-r
-#| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 12
-#| fig-height: 8
-
-# Create overfitting comparison plot
-library(ggplot2)
-library(gridExtra)
-
-# Calculate common y-axis limits for both plots
-all_rmse_values <- c(tree_comparison$RMSE_Test, tree_comparison$RMSE_Train, performance_df$RMSE_Test, performance_df$RMSE_Train)
-y_min <- min(all_rmse_values) * 0.95
-y_max <- max(all_rmse_values) * 1.05
-
-# Plot 1: Decision Trees (showing overfitting)
-p1 <- ggplot(tree_comparison, aes(x = Max_Depth)) +
-  geom_line(aes(y = RMSE_Test, color = "Test Data"), size = 1.2) +
-  geom_point(aes(y = RMSE_Test, color = "Test Data"), size = 3) +
-  geom_line(aes(y = RMSE_Train, color = "Training Data"), size = 1.2) +
-  geom_point(aes(y = RMSE_Train, color = "Training Data"), size = 3) +
-  labs(title = "Decision Trees: Overfitting Problem",
-       subtitle = "Training performance improves, test performance gets worse",
-       x = "Max Depth", y = "RMSE", color = "Data Type") +
-  theme_minimal() +
-  ylim(y_min, y_max) +
-  scale_color_manual(values = c("Test Data" = "red", "Training Data" = "darkred"))
-
-# Plot 2: Random Forests (no overfitting)
-p2 <- ggplot(performance_df, aes(x = Trees)) +
-  geom_line(aes(y = RMSE_Test, color = "Test Data"), size = 1.2) +
-  geom_point(aes(y = RMSE_Test, color = "Test Data"), size = 3) +
-  geom_line(aes(y = RMSE_Train, color = "Training Data"), size = 1.2) +
-  geom_point(aes(y = RMSE_Train, color = "Training Data"), size = 3) +
-  labs(title = "Random Forests: No Overfitting",
-       subtitle = "Both training and test performance improve with more trees",
-       x = "Number of Trees", y = "RMSE", color = "Data Type") +
-  theme_minimal() +
-  scale_x_log10() +
-  ylim(y_min, y_max) +
-  scale_color_manual(values = c("Test Data" = "blue", "Training Data" = "darkblue"))
-
-# Combine plots
-grid.arrange(p1, p2, ncol = 2)
-```
-
-### Python
-
-```{python}
-#| label: overfitting-plot-python
-#| echo: false
-#| fig-width: 12
-#| fig-height: 8
-
-# Create overfitting comparison plot
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-
-# Calculate common y-axis limits for both plots
-all_rmse_values = list(tree_comparison_df['RMSE_Test']) + list(tree_comparison_df['RMSE_Train']) + list(performance_df['RMSE_Test']) + list(performance_df['RMSE_Train'])
-y_min = min(all_rmse_values) * 0.95
-y_max = max(all_rmse_values) * 1.05
-
-# Plot 1: Decision Trees (showing overfitting)
-ax1.plot(tree_comparison_df['Max_Depth'], tree_comparison_df['RMSE_Test'], 'ro-', linewidth=2, markersize=8, label='Test Data')
-ax1.plot(tree_comparison_df['Max_Depth'], tree_comparison_df['RMSE_Train'], 'darkred', linestyle='--', linewidth=2, markersize=8, label='Training Data')
-ax1.set_xlabel('Max Depth')
-ax1.set_ylabel('RMSE')
-ax1.set_title('Decision Trees: Overfitting Problem\nTraining improves, test gets worse')
-ax1.set_ylim(y_min, y_max)
-ax1.legend()
-ax1.grid(True, alpha=0.3)
-
-# Plot 2: Random Forests (no overfitting)
-ax2.plot(performance_df['Trees'], performance_df['RMSE_Test'], 'bo-', linewidth=2, markersize=8, label='Test Data')
-ax2.plot(performance_df['Trees'], performance_df['RMSE_Train'], 'darkblue', linestyle='--', linewidth=2, markersize=8, label='Training Data')
-ax2.set_xlabel('Number of Trees')
-ax2.set_ylabel('RMSE')
-ax2.set_title('Random Forests: No Overfitting\nBoth training and test improve with more trees')
-ax2.set_xscale('log')
-ax2.set_ylim(y_min, y_max)
-ax2.legend()
-ax2.grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.show()
-```
-
-:::
-
-### The Random Forest Solution
-
-**Why Random Forests Don't Overfit:**
-1. **Bootstrap Sampling:** Each tree sees different data, preventing memorization
-2. **Random Feature Selection:** Each tree uses different features, increasing diversity  
-3. **Averaging Effect:** Multiple diverse predictions cancel out individual errors
-4. **No Single Tree Dominates:** No one tree can overfit the entire dataset
+## Challenge Extensions
 
-**The Magic:** Random forests tend to not overfit and provide a robust prediction.
+### Option 1: Color Psychology
+Experiment with different color schemes that convey the right emotions:
+- Use warm colors (reds, oranges) for problems
+- Use cool colors (blues, greens) for solutions
+- Use neutral colors (grays) for misconceptions
 
-## Baseline Comparison: Random Forest vs Linear Regression
+### Option 2: Shape Customization
+Try different node shapes and sizes:
+- Use `aspect` parameter to control node width
+- Use `scale` parameter to control node size
+- Experiment with `alternate=True` for different shapes
 
-To put random forest performance in context, let's compare it to a simple linear regression baseline. This helps us understand the value of the ensemble approach.
+### Option 3: Advanced Styling
+Explore more advanced customization:
+- Add custom fonts with `fontsize` parameter
+- Use `plot_params` to customize every visual aspect
+- Add plates to show repeated structures
 
-**Why This Comparison Matters:** Linear regression provides a simple, interpretable baseline. If random forests can't significantly outperform this simple approach, their complexity may not be justified **for this dataset**.
+## Key DAFT Parameters to Explore
 
-## Linear Regression Models
+Based on the [DAFT documentation](https://docs.daft-pgm.org/en/latest/), here are key parameters to experiment with:
 
-::: {.panel-tabset}
+**Node Parameters:**
+- `plot_params`: Dictionary of matplotlib parameters for styling
+- `aspect`: Controls node width (default: 1.0)
+- `scale`: Controls node size (default: 1.0)
+- `fontsize`: Text size in the node
+- `alternate`: Use alternative node shape (True/False)
 
-### R
+**Edge Parameters:**
+- `plot_params`: Dictionary of matplotlib parameters for edge styling
+- `color`: Edge color
+- `linewidth`: Edge thickness
+- `linestyle`: Edge style ('-', '--', ':', etc.)
 
-```{r}
-#| label: linear-regression-r
-#| echo: true
-#| message: false
-#| warning: false
+**PGM Parameters:**
+- `dpi`: Resolution for rendering
+- `alternate_style`: Style for alternate nodes ("inner" or "outer")
 
-# Build linear regression model
-lm_model <- lm(SalePrice ~ ., data = train_data)
+## Submission Requirements
 
-# Calculate predictions
-lm_pred_test <- predict(lm_model, test_data)
-lm_pred_train <- predict(lm_model, train_data)
+Create a Jupyter notebook or Quarto document that includes:
 
-# Calculate performance metrics
-lm_rmse_test <- sqrt(mean((test_data$SalePrice - lm_pred_test)^2))
-lm_rmse_train <- sqrt(mean((train_data$SalePrice - lm_pred_train)^2))
-lm_r2 <- 1 - sum((test_data$SalePrice - lm_pred_test)^2) / sum((test_data$SalePrice - mean(test_data$SalePrice))^2)
+1. **Installation code** for the DAFT package
+2. **At least three different DAGs** showing your creativity
+3. **Comments explaining** your design choices
+4. **A brief reflection** on what you learned about data visualization
 
-cat("Linear Regression Performance:\n")
-cat("Test RMSE:", round(lm_rmse_test, 2), "\n")
-cat("Train RMSE:", round(lm_rmse_train, 2), "\n")
-cat("R-squared:", round(lm_r2, 4), "\n")
-```
+## Resources
 
-### Python
+- [DAFT Documentation](https://docs.daft-pgm.org/en/latest/)
+- [DAFT Examples](https://docs.daft-pgm.org/en/latest/examples/)
+- [Matplotlib Colors](https://matplotlib.org/stable/gallery/color/named_colors.html)
 
-```{python}
-#| label: linear-regression-python
-#| echo: true
+## Reflection Questions
 
-# Build linear regression model
-from sklearn.linear_model import LinearRegression
-
-lm_model = LinearRegression()
-lm_model.fit(X_train, y_train)
+1. How do different color choices affect the emotional impact of your DAG?
+2. What makes a DAG "beautiful" versus just functional?
+3. How might you use DAFT in your future data analysis projects?
 
-# Calculate predictions
-lm_pred_test = lm_model.predict(X_test)
-lm_pred_train = lm_model.predict(X_train)
-
-# Calculate performance metrics
-lm_rmse_test = np.sqrt(mean_squared_error(y_test, lm_pred_test))
-lm_rmse_train = np.sqrt(mean_squared_error(y_train, lm_pred_train))
-lm_r2 = r2_score(y_test, lm_pred_test)
-
-print("Linear Regression Performance:")
-print(f"Test RMSE: {lm_rmse_test:.2f}")
-print(f"Train RMSE: {lm_rmse_train:.2f}")
-print(f"R-squared: {lm_r2:.4f}")
-```
-
-:::
-
-## Performance Comparison: Random Forest vs Linear Regression
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: comparison-table-r
-#| echo: true
-#| message: false
-#| warning: false
-
-# Create comparison table (using performance_df from main analysis)
-comparison_data <- data.frame(
-  Model = c("Linear Regression", "Random Forest (1 tree)", "Random Forest (100 trees)", "Random Forest (1000 trees)", "Random Forest (5000 trees)"),
-  Test_RMSE = c(lm_rmse_test, performance_df$RMSE_Test[1], performance_df$RMSE_Test[4], performance_df$RMSE_Test[6], performance_df$RMSE_Test[8]),
-  Train_RMSE = c(lm_rmse_train, performance_df$RMSE_Train[1], performance_df$RMSE_Train[4], performance_df$RMSE_Train[6], performance_df$RMSE_Train[8]),
-  R_squared = c(lm_r2, performance_df$R_squared[1], performance_df$R_squared[4], performance_df$R_squared[6], performance_df$R_squared[8]),
-  Improvement_vs_LR = c(0, round((lm_rmse_test - performance_df$RMSE_Test[1])/lm_rmse_test * 100, 1), 
-                       round((lm_rmse_test - performance_df$RMSE_Test[4])/lm_rmse_test * 100, 1),
-                       round((lm_rmse_test - performance_df$RMSE_Test[6])/lm_rmse_test * 100, 1),
-                       round((lm_rmse_test - performance_df$RMSE_Test[8])/lm_rmse_test * 100, 1))
-)
-
-print("Performance Comparison:")
-print(comparison_data)
-```
-
-### Python
-
-```{python}
-#| label: comparison-table-python
-#| echo: true
-
-# Create comparison table (using performance_df from main analysis)
-comparison_data = {
-    'Model': ['Linear Regression', 'Random Forest (1 tree)', 'Random Forest (100 trees)', 'Random Forest (1000 trees)', 'Random Forest (5000 trees)'],
-    'Test_RMSE': [lm_rmse_test, performance_df['RMSE_Test'].iloc[0], performance_df['RMSE_Test'].iloc[3], performance_df['RMSE_Test'].iloc[5], performance_df['RMSE_Test'].iloc[7]],
-    'Train_RMSE': [lm_rmse_train, performance_df['RMSE_Train'].iloc[0], performance_df['RMSE_Train'].iloc[3], performance_df['RMSE_Train'].iloc[5], performance_df['RMSE_Train'].iloc[7]],
-    'R_squared': [lm_r2, performance_df['R_squared'].iloc[0], performance_df['R_squared'].iloc[3], performance_df['R_squared'].iloc[5], performance_df['R_squared'].iloc[7]],
-    'Improvement_vs_LR': [0, round((lm_rmse_test - performance_df['RMSE_Test'].iloc[0])/lm_rmse_test * 100, 1), 
-                         round((lm_rmse_test - performance_df['RMSE_Test'].iloc[3])/lm_rmse_test * 100, 1),
-                         round((lm_rmse_test - performance_df['RMSE_Test'].iloc[5])/lm_rmse_test * 100, 1),
-                         round((lm_rmse_test - performance_df['RMSE_Test'].iloc[7])/lm_rmse_test * 100, 1)]
-}
-
-comparison_df = pd.DataFrame(comparison_data)
-print("Performance Comparison:")
-print(comparison_df)
-```
-
-:::
-
-## Visual Comparison: RMSE Performance
-
-::: {.panel-tabset}
-
-### R
-
-```{r}
-#| label: comparison-plot-r
-#| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 12
-#| fig-height: 8
-
-# Create comparison visualization
-library(ggplot2)
-library(gridExtra)
-
-# Plot 1: RMSE Comparison
-p1 <- ggplot(comparison_data, aes(x = Model, y = Test_RMSE)) +
-  geom_col(fill = "steelblue", alpha = 0.7) +
-  geom_text(aes(label = round(Test_RMSE, 0)), vjust = -0.5, size = 3) +
-  labs(title = "Test RMSE Comparison: Linear Regression vs Random Forests",
-       x = "Model", y = "Test RMSE") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# Plot 2: Improvement over Linear Regression
-improvement_data <- comparison_data[2:5, ] # Exclude linear regression itself
-p2 <- ggplot(improvement_data, aes(x = Model, y = Improvement_vs_LR)) +
-  geom_col(fill = "darkgreen", alpha = 0.7) +
-  geom_text(aes(label = paste0(Improvement_vs_LR, "%")), vjust = -0.5, size = 3) +
-  labs(title = "Improvement over Linear Regression",
-       x = "Random Forest Model", y = "RMSE Improvement (%)") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# Combine plots
-grid.arrange(p1, p2, ncol = 2)
-```
-
-### Python
-
-```{python}
-#| label: comparison-plot-python
-#| echo: false
-#| fig-width: 12
-#| fig-height: 8
-
-# Create comparison visualization
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-
-# Plot 1: RMSE Comparison
-ax1.bar(comparison_df['Model'], comparison_df['Test_RMSE'], color='steelblue', alpha=0.7)
-ax1.set_title('Test RMSE Comparison: Linear Regression vs Random Forests')
-ax1.set_xlabel('Model')
-ax1.set_ylabel('Test RMSE')
-ax1.tick_params(axis='x', rotation=45)
-
-# Add value labels on bars
-for i, v in enumerate(comparison_df['Test_RMSE']):
-    ax1.text(i, v + 50, f'{v:.0f}', ha='center', va='bottom')
-
-# Plot 2: Improvement over Linear Regression
-improvement_df = comparison_df[1:5]  # Exclude linear regression itself
-ax2.bar(improvement_df['Model'], improvement_df['Improvement_vs_LR'], color='darkgreen', alpha=0.7)
-ax2.set_title('Improvement over Linear Regression')
-ax2.set_xlabel('Random Forest Model')
-ax2.set_ylabel('RMSE Improvement (%)')
-ax2.tick_params(axis='x', rotation=45)
-
-# Add value labels on bars
-for i, v in enumerate(improvement_df['Improvement_vs_LR']):
-    ax2.text(i, v + 0.5, f'{v:.1f}%', ha='center', va='bottom')
-
-plt.tight_layout()
-plt.show()
-```
-
-:::
-
-## Key Insights: When Random Forests Excel and When They Don't
-
-**Random Forest Advantages:**
-1. **Non-linear Relationships:** Captures complex interactions between features that linear regression misses
-2. **Feature Interactions:** Automatically discovers relationships between variables (e.g., zip code × lot area)
-3. **Robustness:** Less sensitive to outliers and non-normal distributions
-4. **Ensemble Effect:** Multiple trees reduce prediction variance
-
-## Conclusion: The Right Tool for the Right Job
-
-Our analysis reveals an important lesson: **random forests didn't significantly outperform linear regression on this dataset**. This outcome, while initially surprising, provides valuable insights:
-
-**Why Random Forests Underperformed Here:**
-- **Homogeneous Dataset:** The Ames housing data comes from a single, relatively uniform market (Ames, Iowa)
-- **Limited Complexity:** The relationships between features and house prices may be more linear than anticipated
-- **Simple Baseline:** Linear regression provides a strong baseline for this particular dataset
-
-**When to Use Random Forests:**
-- Complex, non-linear relationships between features
-- High-dimensional datasets with many interactions
-- Noisy data where ensemble methods can reduce variance
-- When interpretability is less important than performance
-
-**When Linear Regression Might Suffice:**
-- Relatively simple, linear relationships
-- Homogeneous datasets from similar contexts
-- When interpretability is crucial
-- When computational efficiency matters
-
-This analysis demonstrates that **the best model depends on the data**. While random forests are powerful tools, they're not always necessary. The key is understanding your data and choosing the appropriate tool for the job.
+---
 
-
+*This challenge should take approximately 30 minutes to complete. Focus on experimentation and creativity rather than perfection!*
