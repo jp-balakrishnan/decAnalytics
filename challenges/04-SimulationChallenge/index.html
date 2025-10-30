@@ -164,6 +164,22 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 </section>
 <section id="analysis-tasks-fill-these-in" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-tasks-fill-these-in">Analysis Tasks (Fill These In)</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Grading Scope
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Sections 1–4: required and can earn up to 90% of the grade.</li>
+<li>Sections 5–6: optional; strong, well-supported work here can bring your score up to 100%.</li>
+</ul>
+</div>
+</div>
 <section id="expected-value-after-1-flip" class="level3">
 <h3 class="anchored" data-anchor-id="expected-value-after-1-flip">1) Expected Value After 1 Flip</h3>
 <p>TODO: Explain whether the expected value of your account balance after one flip is &gt;, =, or &lt; $30,000. What is the gain in expected value as a percentage of your buy-in? Does this simple analysis suggest you should buy-in to the game?</p>
@@ -194,7 +210,7 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 <h3 class="anchored" data-anchor-id="probability-balance-30000-at-age-75-original-game">4) Probability Balance &gt; $30,000 at Age 75 (Original Game)</h3>
 <p>TODO: Report the probability estimate and interpret its practical meaning.</p>
 <div id="q4-prob-original-py" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Using the 100 simulations above, estimate P(final &gt; 1000)</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Using the 100 simulations above, estimate P(final &gt; 30000)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - Print numeric result with 3 decimals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -204,7 +220,8 @@ Figure&nbsp;1: Generative DAG model for the investment game showing how wealth e
 <div id="q5-modified-50pct-py" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Implement the modified game</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - Run 100 simulations; plot distribution of final balances</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - Estimate P(final &gt; 1000) and compare to original</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - Estimate P(final &gt; 30000) and compare to original</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - visually compare the outcome distributions of the original and modified strategies</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="briefly-explain-your-findings-from-the-previous-step-in-light-of-a-concept-known-as-the-kelly-criterion" class="level3">

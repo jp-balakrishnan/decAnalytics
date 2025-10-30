@@ -76,6 +76,13 @@ investmentDAG.show()
 
 ## Analysis Tasks (Fill These In)
 
+::::: {.callout-note}
+## Grading Scope
+
+- Sections 1–4: required and can earn up to 90% of the grade.
+- Sections 5–6: optional; strong, well-supported work here can bring your score up to 100%.
+::::
+
 ### 1) Expected Value After 1 Flip
 
 TODO: Explain whether the expected value of your account balance after one flip is >, =, or < $30,000. What is the gain in expected value as a percentage of your buy-in? Does this simple analysis suggest you should buy-in to the game?
@@ -127,7 +134,7 @@ TODO: Report the probability estimate and interpret its practical meaning.
 #| label: q4-prob-original-py
 #| echo: true
 
-# TODO: Using the 100 simulations above, estimate P(final > 1000)
+# TODO: Using the 100 simulations above, estimate P(final > 30000)
 # - Print numeric result with 3 decimals
 
 ```
@@ -143,7 +150,8 @@ Instead of having the full balance at risk with each coin flip, assume only 25% 
 
 # TODO: Implement the modified game
 # - Run 100 simulations; plot distribution of final balances
-# - Estimate P(final > 1000) and compare to original
+# - Estimate P(final > 30000) and compare to original
+# - visually compare the outcome distributions of the original and modified strategies
 
 ```
 
