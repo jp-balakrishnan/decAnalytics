@@ -1,0 +1,219 @@
+## Seven mental models of dataset manipulation
+
+To calculate the 2,600-elements we will use the first of seven categories of important data manipulations known as _the seven mental models of dataset manipulation_ (inspired by @wickham2022).  We quickly list the seven mental models here before continuing on towards our objective of how to calculate representative samples of profit and lost sales for each potential order quantity.
+
+::: {.column-margin}
+"Seven mental models of dataset manipulation" is not an industry standard term.  Its a mnemonic device for us to recognize that seven functions will get you most of what you need for manipulating datasets.  I take inspiration from Hadley Wickham's verbs of data manipulation which have been wildly successful in simplifying the ease with which one's brain is translated into data manipulating code.
+:::
+
+The seven most important ways we might want to manipulate a data array or dataset is to:
+
+1) Assign: `.assign()` or `assign_coords()`: Add data variables with broadcasting and array math.  (Can also use dict-like methods)
+2) Subset: `.sel()` or `.where()` subset a data array or dataset based on coordinates or data values, respectively.
+3) Drop: `.drop_vars()` or `.drop_dims()`: Remove an explicit list of data variables or remove all data variables indexed by a particular dimension.
+4) Sort: `.sortby()` sorts or arranges a data array or dataset based on data values or coordinate values.
+5) Aggregate: See the [xarray documentation](https://docs.xarray.dev/en/stable/api.html?highlight=aggregation#) for a list of aggregation functions.  These functions will collapse all the data of a given dimension; for example one can collapse a time dimension using the `mean()` aggregation method to get the average value for all of time.
+6) Split-Apply-Combine: `.groupby()` and `DatasetGroupBy.foo()` are usually used in combination to 1) _split_ the dataset into groups based on levels of a variable, 2) _apply_ a function (e.g. `foo()`) to each group's dataset individually, and then 3) _combine_ the modified datasets. See the [xarray documentation](https://docs.xarray.dev/en/stable/api.html?highlight=Groupby#groupby-objects) for more details.
+7) Merge(join): Getting information from two datasets to intelligently combine.
+
+
+### Assign: Adding Data Arrays
+
+Recapping what has been done from a graphical model perspective, we created `DataArray` objects for all of the nodes that lack parent nodes in the graphical model, like $d$ and $q$ in @fig-newsvGM3, and then we used `merge()` to create a dataset containing all the parentless data arrays, as they are the basis for our coordinates and all additional computations.  Now, introduced here, we use the `.assign()` method to create new data variables for all the other (children) nodes of the graphical model.
+
+Notice the $\min(d_i,q)$ term used in calculating profit.  This term actually represents the number of newspapers sold for any ordered pair of $(d_i,q)$.  If demand exceeds the order amount, then the newsvendor can still only sell $q$ newspapers.  And if the newsvendor over-orders, $q>d$, then the newsvendor can only sell $d$ newspapers.
+
+```{python}
+(  ## open parenthesis to start readable code
+    newsvDS
+    .assign(soldNewspapers = np.minimum(newsvDS.demand,newsvDS.orderQty))
+) ## close parenthesis finishes the "method chaining"
+```
+
+```{python}
+#| eval: false
+(  ## open parenthesis to start readable code
+    newsvDS
+    .assign(soldNewspapers = np.minimum(newsvDS.demand,newsvDS.orderQty))
+    .assign(revenue = 3 * newsvDS.soldNewspapers)
+) ## close parenthesis finishes the "method chaining"
+```
+
+The above code will yield an error:
+
+```
+AttributeError: 'Dataset' object has no attribute 'soldNewspapers'
+```
+
+The last assignment apparently does not have visibility into the newly created data for `soldNewspapers`.  To pass the _current state_ of the dataset to the `.assign()` method, we use a `lambda` function.  The `lambda` function has syntax `lambda arguments : expression` where `lambda` is a keyword telling python to expect an argument (or arguments), followed by a colon (`:`), and then an expression for what will be returned by the function; in our case here, the argument will provide a way of referencing the current state of the dataset in the method chain.  We will call it `DS` to signal to our brain that the `.assign()` method is receving a dataset.  Here is updated code that works:
+
+```{python}
+(  ## open parenthesis to start readable code
+    newsvDS
+    .assign(soldNewspapers = np.minimum(newsvDS.demand,newsvDS.orderQty))
+    .assign(revenue = lambda DS: 3 * DS.soldNewspapers)
+) ## use lambda function to get current state of dataset in chain
+```
+
+::: {.column-margin}
+Yes, I think the need to use `lambda` functions creates unnecessary cognitive friction.  I wish it was easier.  That being said, method chaining creates such readable and debuggable code, it is worth incurring a little overhead now to learn about `lambda` functions.
+:::
+
+Now, along with some intermediate variables to enhance understanding of the math, we create the two primary outcomes of interest which are profit and lost sales.  We also convert all assignments into `lambda` functions so that we may use this method chain with another dataset.  Lastly, a two-line combo converts our dataset to a dataframe so that we may take an error-checking peek at few observations of our outcomes:
+
+```{python}
+newsvDS = (newsvDS
+            .assign(soldNewspapers = np.minimum(newsvDS.demand,newsvDS.orderQty))
+            .assign(revenue = lambda DS: 3 * DS.soldNewspapers)
+            .assign(expense = 1 * newsvDS.orderQty)
+            .assign(profit = lambda DS: DS.revenue - DS.expense)
+            .assign(lostSales = np.maximum(0, newsvDS.demand - newsvDS.orderQty))
+)
+
+(newsvDS
+ .to_dataframe()  #dataframe for printing
+ .sample(5, random_state = 111))  ## show five rows of DF
+```
+
+Note, one can also add columns directly using dict-like indexing when chains of operations are not required.  The following code would work similarly to what we did earlier:
+
+```{python}
+#| eval: false
+
+newsvDS["soldNewspapers"] = np.minimum(newsvDS.demand,newsvDS.orderQty)
+newsvDS["expense"] = newsvDS.orderQty
+newsvDS["revenue"] = 3 * newsvDS.soldNewspapers
+newsvDS["profit"] = newsvDS.revenue - newsvDS.expense
+newsvDS["lostSales"] = np.maximum(0, newsvDS.demand - newsvDS.orderQty)
+newsvDS
+```
+
+
+### Select a subset of the data array or dataset
+
+:::{.column-margin}
+Recall the syntax of help documentation is often `packagename.Class.method` where class is typically capitalized.  So, when referring to a method like `sel()` that is available for `Dataset` object in the `xarray` package, documentation will refer to the method as `xarray.Dataset.sel`.  Sometimes for brevity, I will drop that package name and use `Dataset.sel`.  Also recall that to use a method, add parentheses after the method name, i.e. `sel()`.
+:::
+
+To reduce a dataset or data array by selecting a subset of coordinates to keep, use the associated methods: `Dataset.sel()` or `DataArray.sel`.
+
+```{python}
+# select a particular value for a dimension
+newsvDS.sel(orderQtyIndex = 36) # returns 1-d dataset
+```
+
+`xarray` follows the pandas convention for selecting a range of coordinate values to keep using the `slice` function.
+
+```{python}
+# slicing returns all values inside the range (inclusive)
+# as long as the index labels are monotonic increasing
+newsvDS.sel(orderQtyIndex = slice(36,38))
+```
+
+Slicing returns a smaller dataset or data array based on coordinates, but often we want a smaller dataset based on data values.  In these cases, we apply the `.where()` method where the argument is some logical condition for which data to keep:
+
+```{python}
+# need to explicitly use DataSet.DataArray syntax for
+# filtering out rows that do not meet condition
+newsvDS.where(newsvDS.lostSales > 0)
+```
+
+Often times, the `lambda` syntax for anonymous functions gets used to pass in the dataset name:
+
+```{python}
+(newsvDS.where(lambda x: x.lostSales > 0, drop = True)
+ .to_dataframe()  #convert to pandas dataframe for printing
+ .dropna() # pandas method to remove NaN rows
+ .sample(5, random_state = 111))
+```
+
+You should experiment with omitting the `pandas.DataFrame.dropna` method from the above.  Because filtering on data variables does not change the coordinate system, many coordinate combinations that are of part of the `xarray` dataset will have missing values because the values that were there did not survive the filtering process (e.g. `lostSales > 0`).
+
+:::{.column-margin}
+For more information on selecting subsets of datasets or arrays, or dropping a data array from an existing dataset, this `xarray` tutorial on selecting and indexing data is useful  [https://docs.xarray.dev/en/stable/user-guide/indexing.html](https://docs.xarray.dev/en/stable/user-guide/indexing.html).
+:::
+
+### Drop Dimensions
+
+The `drop_dims()` method returns a new object by dropping a full dimension from a dataset along with any variables whose coordinates rely on that dimension.
+
+```{python}
+newsvDS.drop_dims("orderQtyIndex")
+```
+
+Above, the order quantity dimension is dropped along with all the data variables whose value depended on order quantity: `orderQty`, `soldNewspapers`, `revenue`, `expense`, `profit`, and `lostSales`.
+
+If you want to just drop some of the data variables, you use `drop_vars()`:
+
+```{python}
+newsvDS.drop_vars(["revenue","expense"])
+```
+
+
+### Sort a data array or dataset based on data values or data values.
+
+For us, sorting is best done outside of `xarray`.  We will typically want dataframe-like reports generated out of `xarray` as a last step in data manipulation.  We will rely on `pandas.DataFrame.sort_values()` to help us for this mental model.
+
+```{python}
+(newsvDS
+ .to_dataframe()
+ .sort_values("profit"))
+```
+
+Using `.sort_values("profit", ascending = True)` would reverse the sort order so maximum profit is first.
+
+
+### Aggregation
+
+:::{.column-margin}
+See the `xarray` documentation at [https://docs.xarray.dev/en/stable/api.html#id6](https://docs.xarray.dev/en/stable/api.html#id6) for more a complete list of aggregation functions.
+:::
+
+This is the mental model we will use to report summary statistics (mean, median, quantile); we will use it throughout the remainder of this textbook.
+
+We have a two-step process:
+
+1) Aggregate the information in a data array.
+2) Assign the output of the aggregation to a new data array in a pre-existing dataset.
+
+By way of example, let's get the expected profit associated with each order quantity for our newsvendor in @exm-newsv2.  Currently, our dataset, `newsvDS`, has 100 values (one for each `draw`) for each of the 26 order quantities.  What we want is just 1-value for each of the 26 order quantities; so, we seek to collapse all 100 draws for an order quantity into 1 number representing the mean profit.  Starting this process, we aggregate the profit array along the dimension(s) we want to collapse, in this case we no longer want the `draw` dimension:
+
+```{python}
+## collapse the 100 draws into 1 summary statistic
+newsvDS.profit.mean(dim = "draw")
+```
+
+Notice, this returns a `DataArray` object.  We will then keep our data and summary statistics together in one dataset by adding the array back to the original dataset using `assign()`.  Here the two-step workflow is demonstrated to return expected profit and expected lost sales for each order quantity:
+
+```{python}
+## create mean summary stats
+(
+    newsvDS
+    .assign(expProfit = newsvDS.profit.mean(dim="draw"))
+    .assign(expLossSales = newsvDS.lostSales.mean(dim="draw"))
+)
+```
+
+Under "Data Variables" notice `expProfit` and `expLoss` are one-dimensional with that one-dimension being `orderQtyIndex`.  Pretty cool how we can compactly store all this related information in one dataset!  Feel free to play around with these other frequently-used aggregation functions include `count`, `first`, `last`, `max`, `mean`, `median`, `min`, `quantile`, and `sum.`
+
+
+
+### Split-Apply-Combine
+
+`.groupby()` and `DatasetGroupBy.foo()` are usually used in combination to 1) _split_ the dataset into groups based on levels of a variable, 2) _apply_ a function (e.g. `foo()`) to each group's dataset individually, and then 3) _combine_ the modified datasets. See the [xarray documentation](https://docs.xarray.dev/en/stable/api.html?highlight=Groupby#groupby-objects) for more details.  Here is a small sample fo code:
+
+```{python}
+## find average profit by orderQty
+## see documentation here: https://docs.xarray.dev/en/stable/generated/xarray.core.groupby.DatasetGroupBy.mean.html
+(
+    newsvDS
+    .get("profit")
+    .groupby("orderQtyIndex")
+    .mean(...)
+).to_dataframe()
+```
+
+
+### Merge(join):
+
+Here, we can bring in information from another dataset.  More info for this section is forthcoming.

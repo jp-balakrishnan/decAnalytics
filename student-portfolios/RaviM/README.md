@@ -15,4 +15,4 @@
 ## 🖼️ Portfolio Images
 
 ### One of my favorite hikes
-![My daughters School Anniversary](student-portfolios\RaviM\Ravi.png)
+![My daughters School Anniversary](Ravi.png)

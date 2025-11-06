@@ -17,15 +17,46 @@ This challenge will get you set up with many of the essential tools for our Deci
 
 ## Part 1: Core Tools Setup ⚙️
 
-### 1. 📝 Cursor AI Setup
+### 1. 🔧 Git Installation & Setup
 
-- Go to [cursor.com/students](https://cursor.com/students)
-- Sign up with your **udel.edu email** (free for students for 1-year! 🎓, but may need credit card)
-  - **Backup plan:** If student account approval is delayed or has issues, you can sign up for a free 2-week trial at [cursor.com](https://cursor.com) while waiting for your student account to be approved
-- Download and install Cursor AI (default choices for installation are fine)
-- Launch Cursor AI
+**What is Git?** Git is a version control system that tracks changes to your files. It's essential for collaborating and backing up your work.
 
-### 1.5. 🎛️ Cursor AI Interface & Git Setup
+**Install Git:**
+
+- **Windows:** Download from [git-scm.com](https://git-scm.com) → Run installer with default settings
+- **Mac:** Download from [git-scm.com](https://git-scm.com) or install via Xcode Command Line Tools: `xcode-select --install`
+
+**Configure Git (Required First-Time Setup):**
+
+You need to tell Git who you are. This requires using the **Terminal** (Mac) or **Command Prompt/PowerShell** (Windows):
+
+- **What is Terminal/Command Line?** It's a text-based way to interact with your computer. Don't worry - you just need to copy/paste these commands!
+
+- **How to open:**
+  - **Windows:** Press `Win + R`, type `cmd`, press Enter (or search "Command Prompt" in Start menu)
+  - **Mac:** Press `Cmd + Space`, type "Terminal", press Enter
+
+- **Run these commands** (replace with your actual name and email):
+  ```bash
+  git config --global user.name "Your Name"
+  git config --global user.email "your_email@example.com"
+  ```
+
+- **Verify setup:** Run `git config --list` to see your configuration
+
+### 2. 📝 Cursor AI Setup
+
+**Two Parts: Online Dashboard + Local App**
+
+- **Online Dashboard:** Go to [cursor.com/students](https://cursor.com/students)
+  - Sign up with your **udel.edu email** (free for students for 1-year! 🎓)
+  - This is just for billing/account setup - you won't do work here
+- **Local App:** Download and install Cursor AI from the same page
+  - This is where you'll actually write code and do your work
+  - Launch the app and sign in with your udel.edu email
+  - **Troubleshooting:** If free access doesn't work immediately, start the 7-day free trial and verify student status later
+
+### 2.5. 🎛️ Cursor AI Interface & Git Integration
 
 **Getting Familiar with Cursor AI:** Challenge yourself to explore the menus and use documentation to find the below items. ([https://docs.cursor.com/en/welcome](https://docs.cursor.com/en/welcome))
 
@@ -60,24 +91,22 @@ This challenge will get you set up with many of the essential tools for our Deci
   - Can analyze multiple files, suggest refactoring, and help with complex tasks
   - **Difference:** Ask mode is for quick questions, Agent mode is for deeper project-wide assistance
 
-**Set up Git for Local Source Control:**
+**Connect Git to Cursor AI:**
 
 - Click the **Source Control icon** (three-branch icon) in the activity bar
-- Follow prompts to Download Git (use default settings when prompted)
-  - **Why?** Git tracks all changes to your files, so you can see what you've modified
-- **Return to Cursor** after Git installation completes
+- Since you already installed Git, Cursor AI should automatically detect it
 - This sets up Git tracking (version control) for your local project folder
   - **Why?** Version control lets you save your work progress and collaborate with others
 - Later in this tutorial, you will see a "Changes" section in the sidebar showing modified files
   - **Why?** This helps you see exactly what files you've changed before submitting
 - **Alternative:** You can also click "Clone Repository" in the Source Control panel to get your GitHub repository
 
-### 2. 🔗 GitHub Account
+### 3. 🔗 GitHub Account
 
 - Create account at [github.com](https://github.com) (if you don't have one)
 - Not necessarily needed, but use your **udel.edu email** for consistency/simplicity
 
-### 3. 📥 Get Course Materials
+### 4. 📥 Get Course Materials
 
 **Fork & Clone:**
 
@@ -90,7 +119,7 @@ This challenge will get you set up with many of the essential tools for our Deci
   - **Why?** This downloads your personal copy to your computer
 - Choose where to save locally (I recommend somewhere easy to find like C:\).  A folder named `decAnalytics` will be placed in this location for you upon cloning.
 
-### 4. 👤 Create Your Student Folder
+### 5. 👤 Create Your Student Folder
 
 **Using the Activity Bar & Sidebar:**
 
@@ -116,7 +145,7 @@ This challenge will get you set up with many of the essential tools for our Deci
   - Click "Commit" (✓ icon)
   - **Why commit now?** This creates a backup of your work in case something goes wrong!
 
-### 4.5. 🔄 Sync to GitHub & Verify Content
+### 5.5. 🔄 Sync to GitHub & Verify Content
 
 **Before submitting your pull request, let's make sure everything is properly uploaded and visible on GitHub:**
 
@@ -136,12 +165,12 @@ This challenge will get you set up with many of the essential tools for our Deci
   - Refresh your GitHub page to verify the updates
 - **Only proceed to the next step when everything looks correct on GitHub!**
 
-### 5. 🔄 Submit via Pull Request
+### 6. 🔄 Submit via Pull Request
 
 **What is a Pull Request?**
 A pull request is like asking "Hey, can you add my changes to your project?" It's how you submit your work for review and inclusion in the main course repository. Think of it as a digital way to turn in your homework!
 
-**Since you already synced your changes to GitHub in step 4.5, you can now create your pull request directly:**
+**Since you already synced your changes to GitHub in step 5.5, you can now create your pull request directly:**
 
 - Go to your forked repo on GitHub to create the pull request
 
@@ -162,8 +191,9 @@ A pull request is like asking "Hey, can you add my changes to your project?" It'
 You've completed the tech setup challenge! Check the checklist below to make sure you've completed all the steps.
 
 ## 📋 Submission Checklist
+- [ ] Git installed and configured with your name/email
 - [ ] Cursor AI installed and configured
-- [ ] Git set up in Cursor AI (Source Control)
+- [ ] Git connected to Cursor AI (Source Control)
 - [ ] GitHub account created
 - [ ] Course materials forked and cloned
 - [ ] Student folder created with README.md
